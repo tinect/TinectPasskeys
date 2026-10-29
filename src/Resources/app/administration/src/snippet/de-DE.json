@@ -1,0 +1,20 @@
+{
+    "tinect-passkeys": {
+        "customerCard": {
+            "title": "Passkeys",
+            "columnName": "Bezeichnung",
+            "columnCreatedAt": "Erstellt",
+            "columnLastUsedAt": "Zuletzt verwendet",
+            "neverUsed": "Noch nie",
+            "empty": "Der Kunde hat keine Passkeys hinterlegt.",
+            "actionDelete": "Entfernen",
+            "deleteConfirm": "Passkey „{name}“ wirklich entfernen? Der Kunde kann sich damit nicht mehr anmelden.",
+            "notificationDeleteSuccess": "Der Passkey wurde entfernt.",
+            "notificationDeleteError": "Der Passkey konnte nicht entfernt werden.",
+            "passwordLoginDisabled": "Der Kunde hat die Anmeldung per Passwort deaktiviert und meldet sich nur noch mit Passkey an.",
+            "actionEnablePasswordLogin": "Passwort-Login wieder aktivieren",
+            "notificationPasswordLoginEnabled": "Die Anmeldung per Passwort ist wieder aktiviert.",
+            "notificationPasswordLoginError": "Die Anmeldung per Passwort konnte nicht aktiviert werden."
+        }
+    }
+}

@@ -1,0 +1,53 @@
+{
+    "tinect-passkeys": {
+        "login": {
+            "button": "Inloggen met passkey",
+            "error": "Inloggen met de passkey is mislukt. Probeer het opnieuw of log in met uw wachtwoord.",
+            "errorThrottled": "Te veel inlogpogingen. Wacht even."
+        },
+        "profile": {
+            "title": "Passkeys",
+            "description": "Met een passkey logt u in zonder wachtwoord – met vingerafdruk, gezichtsherkenning of de pincode van uw apparaat.",
+            "createdAt": "Aangemaakt op",
+            "lastUsedAt": "laatst gebruikt",
+            "delete": "Verwijderen"
+        },
+        "register": {
+            "button": "Passkey toevoegen",
+            "nameLabel": "Naam",
+            "namePlaceholder": "bijv. laptop of smartphone",
+            "defaultName": "Passkey",
+            "passwordLabel": "Huidig wachtwoord",
+            "errorPassword": "Het ingevoerde wachtwoord is onjuist.",
+            "errorThrottled": "Te veel pogingen. Wacht even.",
+            "error": "De passkey kon niet worden toegevoegd.",
+            "unsupported": "Uw browser ondersteunt geen passkeys.",
+            "success": "De passkey is toegevoegd."
+        },
+        "delete": {
+            "success": "De passkey is verwijderd.",
+            "confirmTitle": "Passkey verwijderen",
+            "confirmText": "Wilt u de passkey <strong>%name%</strong> echt verwijderen? U kunt er daarna niet meer mee inloggen.",
+            "cancel": "Annuleren",
+            "confirm": "Passkey verwijderen"
+        },
+        "mail": {
+            "subject": "Er is een nieuwe passkey aan uw account toegevoegd",
+            "preHeader": "Er is een nieuwe passkey aan uw klantaccount toegevoegd.",
+            "text": "zojuist is er een nieuwe passkey aan uw klantaccount toegevoegd:",
+            "ifYou": "Was u dit zelf, dan hoeft u niets te doen.",
+            "ifNotYou": "Was u dit niet, verwijder de passkey dan direct in uw account en wijzig uw wachtwoord:",
+            "manage": "Passkeys beheren"
+        },
+        "passwordLogin": {
+            "description": "Logt u alleen nog in met passkeys? Dan kunt u inloggen met wachtwoord voor uw account uitschakelen. Een gestolen wachtwoord is dan niet meer genoeg om toegang tot uw account te krijgen.",
+            "disable": "Inloggen met wachtwoord uitschakelen",
+            "disabledInfo": "Inloggen met wachtwoord is voor uw account uitgeschakeld, u logt alleen in met passkeys. Via „Wachtwoord vergeten” wordt inloggen met wachtwoord automatisch weer ingeschakeld.",
+            "enable": "Inloggen met wachtwoord weer inschakelen",
+            "disabledSuccess": "Inloggen met wachtwoord is uitgeschakeld.",
+            "enabledSuccess": "Inloggen met wachtwoord is weer ingeschakeld.",
+            "errorNoPasskey": "Voeg eerst een passkey toe.",
+            "reEnabledLastPasskey": "Omdat u geen passkey meer heeft, is inloggen met wachtwoord weer ingeschakeld."
+        }
+    }
+}

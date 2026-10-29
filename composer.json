@@ -1,0 +1,40 @@
+{
+    "name": "tinect/passkeys",
+    "description": "Passkey (WebAuthn) login for storefront customers",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "version": "1.0.0",
+    "autoload": {
+        "psr-4": {
+            "Tinect\\Passkeys\\": "src/"
+        }
+    },
+    "extra": {
+        "shopware-plugin-class": "Tinect\\Passkeys\\TinectPasskeys",
+        "label": {
+            "de-DE": "Passkeys",
+            "en-GB": "Passkeys"
+        },
+        "description": {
+            "de-DE": "Ermöglicht Kunden die Anmeldung im Storefront per Passkey (WebAuthn).",
+            "en-GB": "Allows customers to log in to the storefront using passkeys (WebAuthn)."
+        }
+    },
+    "require": {
+        "shopware/core": "~6.7.0",
+        "shopware/storefront": "~6.7.0",
+        "web-auth/webauthn-lib": "^5.3"
+    },
+    "authors": [
+        {
+            "name": "tinect"
+        }
+    ],
+    "scripts": {
+        "check": [
+            "docker run --rm -v $(pwd):/ext shopware/shopware-cli:latest extension validate --check-against lowest --full /ext",
+            "docker run --rm -v $(pwd):/ext shopware/shopware-cli:latest extension validate --check-against highest --full /ext"
+        ],
+        "format": "docker run --rm -v $(pwd):/ext shopware/shopware-cli:latest extension format /ext"
+    }
+}

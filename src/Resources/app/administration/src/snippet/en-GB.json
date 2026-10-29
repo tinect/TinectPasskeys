@@ -1,0 +1,20 @@
+{
+    "tinect-passkeys": {
+        "customerCard": {
+            "title": "Passkeys",
+            "columnName": "Name",
+            "columnCreatedAt": "Created",
+            "columnLastUsedAt": "Last used",
+            "neverUsed": "Never",
+            "empty": "This customer has no passkeys.",
+            "actionDelete": "Remove",
+            "deleteConfirm": "Really remove passkey \"{name}\"? The customer can no longer log in with it.",
+            "notificationDeleteSuccess": "The passkey has been removed.",
+            "notificationDeleteError": "The passkey could not be removed.",
+            "passwordLoginDisabled": "The customer disabled the password login and only logs in with passkeys.",
+            "actionEnablePasswordLogin": "Enable password login again",
+            "notificationPasswordLoginEnabled": "The password login has been enabled again.",
+            "notificationPasswordLoginError": "The password login could not be enabled."
+        }
+    }
+}

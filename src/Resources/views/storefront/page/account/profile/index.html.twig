@@ -1,0 +1,172 @@
+{% sw_extends '@Storefront/storefront/page/account/profile/index.html.twig' %}
+
+{% block page_account_profile_mail_and_password %}
+    {{ parent() }}
+
+    {% block page_account_profile_passkeys %}
+        {% set tinectPasskeys = page.extensions.tinectPasskeys.passkeys ?? [] %}
+        {% set tinectPasswordLoginDisabled = page.extensions.tinectPasskeys.passwordLoginDisabled ?? false %}
+
+        <div class="card account-profile-passkeys mb-4" id="tinect-passkeys">
+            <div class="card-body">
+                {% block page_account_profile_passkeys_title %}
+                    <div class="card-title">
+                        {{ 'tinect-passkeys.profile.title'|trans|sw_sanitize }}
+                    </div>
+                {% endblock %}
+
+                {% block page_account_profile_passkeys_description %}
+                    <p>{{ 'tinect-passkeys.profile.description'|trans|sw_sanitize }}</p>
+                {% endblock %}
+
+                {% block page_account_profile_passkeys_list %}
+                    {% if tinectPasskeys is not empty %}
+                        <ul class="list-group mb-3">
+                            {% for passkey in tinectPasskeys %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center gap-2">
+                                    <div>
+                                        <strong>{{ passkey.name }}</strong>
+                                        <div class="small text-muted">
+                                            {{ 'tinect-passkeys.profile.createdAt'|trans|sw_sanitize }}
+                                            {{ passkey.createdAt|format_date('medium', locale=app.request.locale) }}
+                                            {% if passkey.lastUsedAt %}
+                                                &middot;
+                                                {{ 'tinect-passkeys.profile.lastUsedAt'|trans|sw_sanitize }}
+                                                {{ passkey.lastUsedAt|format_datetime('medium', 'short', locale=app.request.locale) }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-danger"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#tinectPasskeyDeleteModal-{{ passkey.id }}"
+                                            title="{{ 'tinect-passkeys.profile.delete'|trans|striptags }}">
+                                        {{ 'tinect-passkeys.profile.delete'|trans|sw_sanitize }}
+                                    </button>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        {% for passkey in tinectPasskeys %}
+                            {% block page_account_profile_passkeys_delete_modal %}
+                                <div class="modal fade"
+                                     id="tinectPasskeyDeleteModal-{{ passkey.id }}"
+                                     tabindex="-1"
+                                     aria-labelledby="tinectPasskeyDeleteModalTitle-{{ passkey.id }}"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h2 class="modal-title h5" id="tinectPasskeyDeleteModalTitle-{{ passkey.id }}">
+                                                    {{ 'tinect-passkeys.delete.confirmTitle'|trans|sw_sanitize }}
+                                                </h2>
+                                                <button type="button"
+                                                        class="btn-close"
+                                                        data-bs-dismiss="modal"
+                                                        aria-label="{{ 'global.default.close'|trans|striptags }}"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                {{ 'tinect-passkeys.delete.confirmText'|trans({ '%name%': passkey.name|e })|raw }}
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button"
+                                                        class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">
+                                                    {{ 'tinect-passkeys.delete.cancel'|trans|sw_sanitize }}
+                                                </button>
+
+                                                <form action="{{ path('frontend.tinect-passkeys.delete', { passkeyId: passkey.id }) }}"
+                                                      method="post">
+                                                    <button type="submit" class="btn btn-danger">
+                                                        {{ 'tinect-passkeys.delete.confirm'|trans|sw_sanitize }}
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endblock %}
+                        {% endfor %}
+                    {% endif %}
+                {% endblock %}
+
+                {% block page_account_profile_passkeys_password_login %}
+                    {% if tinectPasskeys is not empty %}
+                        <form class="tinect-passkey-password-login mb-4"
+                              action="{{ path('frontend.tinect-passkeys.password-login') }}"
+                              method="post">
+                            {% if tinectPasswordLoginDisabled %}
+                                {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
+                                    type: 'info',
+                                    content: 'tinect-passkeys.passwordLogin.disabledInfo'|trans|sw_sanitize
+                                } %}
+
+                                <input type="hidden" name="disabled" value="0">
+                                <button type="submit" class="btn btn-outline-secondary">
+                                    {{ 'tinect-passkeys.passwordLogin.enable'|trans|sw_sanitize }}
+                                </button>
+                            {% else %}
+                                <p class="mb-2">{{ 'tinect-passkeys.passwordLogin.description'|trans|sw_sanitize }}</p>
+
+                                <input type="hidden" name="disabled" value="1">
+                                <button type="submit" class="btn btn-outline-primary">
+                                    {{ 'tinect-passkeys.passwordLogin.disable'|trans|sw_sanitize }}
+                                </button>
+                            {% endif %}
+                        </form>
+                    {% endif %}
+                {% endblock %}
+
+                {% block page_account_profile_passkeys_register %}
+                    {% set tinectPasskeyRegisterOptions = {
+                        optionsUrl: path('frontend.tinect-passkeys.register.options'),
+                        registerUrl: path('frontend.tinect-passkeys.register'),
+                        errorMessage: 'tinect-passkeys.register.error'|trans|striptags,
+                    } %}
+
+                    <form class="tinect-passkey-register"
+                          data-tinect-passkey-register="true"
+                          data-tinect-passkey-register-options="{{ tinectPasskeyRegisterOptions|json_encode }}">
+                        <div class="row g-2">
+                            <div class="form-group col-md-6">
+                                <label class="form-label" for="tinectPasskeyName">
+                                    {{ 'tinect-passkeys.register.nameLabel'|trans|sw_sanitize }}
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="tinectPasskeyName"
+                                       name="name"
+                                       maxlength="255"
+                                       placeholder="{{ 'tinect-passkeys.register.namePlaceholder'|trans|striptags }}">
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label class="form-label" for="tinectPasskeyPassword">
+                                    {{ 'tinect-passkeys.register.passwordLabel'|trans|sw_sanitize }}{{ 'general.required'|trans|sw_sanitize }}
+                                </label>
+                                <input type="password"
+                                       class="form-control"
+                                       id="tinectPasskeyPassword"
+                                       name="password"
+                                       autocomplete="current-password"
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="tinect-passkey-register-error alert alert-danger mt-2 d-none" role="alert"></div>
+                        <div class="tinect-passkey-register-unsupported alert alert-warning mt-2 d-none" role="alert">
+                            {{ 'tinect-passkeys.register.unsupported'|trans|sw_sanitize }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-2">
+                            {{ 'tinect-passkeys.register.button'|trans|sw_sanitize }}
+                        </button>
+                    </form>
+                {% endblock %}
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}

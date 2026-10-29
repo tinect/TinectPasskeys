@@ -1,0 +1,5 @@
+vendor
+var/cache
+composer.lock
+src/Resources/app/storefront/dist/storefront/js
+src/Resources/public/administration

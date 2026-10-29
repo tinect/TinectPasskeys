@@ -1,0 +1,28 @@
+{% sw_extends '@Storefront/storefront/component/account/login.html.twig' %}
+
+{% block component_account_login_submit %}
+    {{ parent() }}
+
+    {% block component_account_login_passkey %}
+        {% set tinectPasskeyLoginOptions = {
+            optionsUrl: path('frontend.tinect-passkeys.login.options'),
+            loginUrl: path('frontend.tinect-passkeys.login'),
+            errorMessage: 'tinect-passkeys.login.error'|trans|striptags,
+        } %}
+
+        <div class="tinect-passkey-login mt-3 d-none"
+             data-tinect-passkey-login="true"
+             data-tinect-passkey-login-options="{{ tinectPasskeyLoginOptions|json_encode }}">
+            {% block component_account_login_passkey_button %}
+                <button type="button"
+                        class="tinect-passkey-login-button btn btn-outline-primary">
+                    {{ 'tinect-passkeys.login.button'|trans|sw_sanitize }}
+                </button>
+            {% endblock %}
+
+            {% block component_account_login_passkey_error %}
+                <div class="tinect-passkey-login-error invalid-feedback d-none" role="alert"></div>
+            {% endblock %}
+        </div>
+    {% endblock %}
+{% endblock %}

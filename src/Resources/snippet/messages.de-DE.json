@@ -1,0 +1,53 @@
+{
+    "tinect-passkeys": {
+        "login": {
+            "button": "Mit Passkey anmelden",
+            "error": "Die Anmeldung mit dem Passkey ist fehlgeschlagen. Bitte versuchen Sie es erneut oder melden Sie sich mit Ihrem Passwort an.",
+            "errorThrottled": "Zu viele Anmeldeversuche. Bitte warten Sie einen Moment."
+        },
+        "profile": {
+            "title": "Passkeys",
+            "description": "Mit einem Passkey melden Sie sich ohne Passwort an – per Fingerabdruck, Gesichtserkennung oder Geräte-PIN.",
+            "createdAt": "Erstellt am",
+            "lastUsedAt": "zuletzt verwendet",
+            "delete": "Entfernen"
+        },
+        "register": {
+            "button": "Passkey hinzufügen",
+            "nameLabel": "Bezeichnung",
+            "namePlaceholder": "z. B. Laptop oder Smartphone",
+            "defaultName": "Passkey",
+            "passwordLabel": "Aktuelles Passwort",
+            "errorPassword": "Das eingegebene Passwort ist nicht korrekt.",
+            "errorThrottled": "Zu viele Versuche. Bitte warten Sie einen Moment.",
+            "error": "Der Passkey konnte nicht hinzugefügt werden.",
+            "unsupported": "Ihr Browser unterstützt keine Passkeys.",
+            "success": "Der Passkey wurde hinzugefügt."
+        },
+        "delete": {
+            "success": "Der Passkey wurde entfernt.",
+            "confirmTitle": "Passkey entfernen",
+            "confirmText": "Möchten Sie den Passkey <strong>%name%</strong> wirklich entfernen? Sie können sich danach nicht mehr damit anmelden.",
+            "cancel": "Abbrechen",
+            "confirm": "Passkey entfernen"
+        },
+        "mail": {
+            "subject": "Neuer Passkey zu Ihrem Kundenkonto hinzugefügt",
+            "preHeader": "Zu Ihrem Kundenkonto wurde ein neuer Passkey hinzugefügt.",
+            "text": "zu Ihrem Kundenkonto wurde soeben ein neuer Passkey hinzugefügt:",
+            "ifYou": "Wenn Sie das waren, ist nichts weiter zu tun.",
+            "ifNotYou": "Wenn nicht, entfernen Sie den Passkey bitte umgehend in Ihrem Kundenkonto und ändern Sie Ihr Passwort:",
+            "manage": "Passkeys verwalten"
+        },
+        "passwordLogin": {
+            "description": "Melden Sie sich nur noch mit Passkey an? Dann können Sie die Anmeldung per Passwort für Ihr Konto deaktivieren. Ein gestohlenes Passwort reicht dann nicht mehr für den Zugriff auf Ihr Konto.",
+            "disable": "Anmeldung per Passwort deaktivieren",
+            "disabledInfo": "Die Anmeldung per Passwort ist für Ihr Konto deaktiviert, Sie melden sich nur mit Passkey an. Über „Passwort vergessen“ wird die Anmeldung per Passwort automatisch wieder aktiviert.",
+            "enable": "Anmeldung per Passwort wieder aktivieren",
+            "disabledSuccess": "Die Anmeldung per Passwort wurde deaktiviert.",
+            "enabledSuccess": "Die Anmeldung per Passwort wurde wieder aktiviert.",
+            "errorNoPasskey": "Fügen Sie zuerst einen Passkey hinzu.",
+            "reEnabledLastPasskey": "Da Sie keinen Passkey mehr haben, wurde die Anmeldung per Passwort wieder aktiviert."
+        }
+    }
+}

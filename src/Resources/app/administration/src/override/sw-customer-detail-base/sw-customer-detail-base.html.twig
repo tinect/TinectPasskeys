@@ -1,0 +1,8 @@
+{% block sw_customer_detail_base_default_addresses_card %}
+{% parent() %}
+
+<tinect-passkey-customer-card
+    v-if="customer?.id && !customer.guest"
+    :customer-id="customer.id"
+/>
+{% endblock %}

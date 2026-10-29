@@ -1,0 +1,88 @@
+{% block tinect_passkey_customer_card %}
+<mt-card
+    class="tinect-passkey-customer-card"
+    position-identifier="tinect-passkey-customer-card"
+    :title="$t('tinect-passkeys.customerCard.title')"
+    :is-loading="isLoading"
+>
+    <mt-banner
+        v-if="passwordLoginDisabled"
+        class="tinect-passkey-customer-card__password-login"
+        variant="info"
+        :closable="false"
+    >
+        {{ $t('tinect-passkeys.customerCard.passwordLoginDisabled') }}
+
+        <mt-button
+            v-if="acl.can('customer.editor')"
+            class="tinect-passkey-customer-card__enable-password-login"
+            size="small"
+            variant="secondary"
+            @click="enablePasswordLogin"
+        >
+            {{ $t('tinect-passkeys.customerCard.actionEnablePasswordLogin') }}
+        </mt-button>
+    </mt-banner>
+
+    <template
+        v-if="passkeys.length > 0"
+        #grid
+    >
+        <sw-data-grid
+            :data-source="passkeys"
+            :columns="columns"
+            :show-selection="false"
+            :show-actions="acl.can('customer.editor')"
+            :plain-appearance="true"
+        >
+            <template #column-createdAt="{ item }">
+                {{ formatDate(item.createdAt) }}
+            </template>
+
+            <template #column-lastUsedAt="{ item }">
+                {{ item.lastUsedAt ? formatDate(item.lastUsedAt) : $t('tinect-passkeys.customerCard.neverUsed') }}
+            </template>
+
+            <template #actions="{ item }">
+                <sw-context-menu-item
+                    variant="danger"
+                    @click="passkeyToDelete = item"
+                >
+                    {{ $t('tinect-passkeys.customerCard.actionDelete') }}
+                </sw-context-menu-item>
+            </template>
+        </sw-data-grid>
+
+        <sw-modal
+            v-if="passkeyToDelete"
+            :title="$t('global.default.warning')"
+            variant="small"
+            @modal-close="passkeyToDelete = null"
+        >
+            <p>{{ $t('tinect-passkeys.customerCard.deleteConfirm', { name: passkeyToDelete.name }) }}</p>
+
+            <template #modal-footer>
+                <mt-button
+                    size="small"
+                    variant="secondary"
+                    @click="passkeyToDelete = null"
+                >
+                    {{ $t('global.default.cancel') }}
+                </mt-button>
+
+                <mt-button
+                    size="small"
+                    variant="critical"
+                    @click="deletePasskey(passkeyToDelete)"
+                >
+                    {{ $t('global.default.delete') }}
+                </mt-button>
+            </template>
+        </sw-modal>
+    </template>
+
+    <p v-else-if="!isLoading">
+        {{ $t('tinect-passkeys.customerCard.empty') }}
+    </p>
+</mt-card>
+{% endblock %}

@@ -1,0 +1,53 @@
+{
+    "tinect-passkeys": {
+        "login": {
+            "button": "Log in with passkey",
+            "error": "Logging in with your passkey failed. Please try again or log in with your password.",
+            "errorThrottled": "Too many login attempts. Please wait a moment."
+        },
+        "profile": {
+            "title": "Passkeys",
+            "description": "A passkey lets you log in without a password, using your fingerprint, face or device PIN.",
+            "createdAt": "Created on",
+            "lastUsedAt": "last used",
+            "delete": "Remove"
+        },
+        "register": {
+            "button": "Add passkey",
+            "nameLabel": "Name",
+            "namePlaceholder": "e.g. laptop or phone",
+            "defaultName": "Passkey",
+            "passwordLabel": "Current password",
+            "errorPassword": "The password you entered is incorrect.",
+            "errorThrottled": "Too many attempts. Please wait a moment.",
+            "error": "The passkey could not be added.",
+            "unsupported": "Your browser does not support passkeys.",
+            "success": "The passkey has been added."
+        },
+        "delete": {
+            "success": "The passkey has been removed.",
+            "confirmTitle": "Remove passkey",
+            "confirmText": "Do you really want to remove the passkey <strong>%name%</strong>? You will no longer be able to log in with it.",
+            "cancel": "Cancel",
+            "confirm": "Remove passkey"
+        },
+        "mail": {
+            "subject": "A new passkey was added to your account",
+            "preHeader": "A new passkey was added to your customer account.",
+            "text": "a new passkey was just added to your customer account:",
+            "ifYou": "If this was you, there is nothing else to do.",
+            "ifNotYou": "If this was not you, please remove the passkey in your account right away and change your password:",
+            "manage": "Manage passkeys"
+        },
+        "passwordLogin": {
+            "description": "Do you only log in with passkeys? Then you can disable the password login for your account. A stolen password is then no longer enough to access your account.",
+            "disable": "Disable password login",
+            "disabledInfo": "The password login is disabled for your account, you only log in with passkeys. Using \"Forgot password\" enables the password login again automatically.",
+            "enable": "Enable password login again",
+            "disabledSuccess": "The password login has been disabled.",
+            "enabledSuccess": "The password login has been enabled again.",
+            "errorNoPasskey": "Please add a passkey first.",
+            "reEnabledLastPasskey": "As you have no passkey left, the password login has been enabled again."
+        }
+    }
+}

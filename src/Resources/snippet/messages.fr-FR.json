@@ -1,0 +1,53 @@
+{
+    "tinect-passkeys": {
+        "login": {
+            "button": "Se connecter avec une clé d’accès",
+            "error": "La connexion avec la clé d’accès a échoué. Veuillez réessayer ou vous connecter avec votre mot de passe.",
+            "errorThrottled": "Trop de tentatives de connexion. Veuillez patienter un instant."
+        },
+        "profile": {
+            "title": "Clés d’accès",
+            "description": "Avec une clé d’accès, vous vous connectez sans mot de passe – par empreinte digitale, reconnaissance faciale ou code PIN de l’appareil.",
+            "createdAt": "Créée le",
+            "lastUsedAt": "dernière utilisation",
+            "delete": "Supprimer"
+        },
+        "register": {
+            "button": "Ajouter une clé d’accès",
+            "nameLabel": "Nom",
+            "namePlaceholder": "p. ex. ordinateur portable ou smartphone",
+            "defaultName": "Clé d’accès",
+            "passwordLabel": "Mot de passe actuel",
+            "errorPassword": "Le mot de passe saisi est incorrect.",
+            "errorThrottled": "Trop de tentatives. Veuillez patienter un instant.",
+            "error": "La clé d’accès n’a pas pu être ajoutée.",
+            "unsupported": "Votre navigateur ne prend pas en charge les clés d’accès.",
+            "success": "La clé d’accès a été ajoutée."
+        },
+        "delete": {
+            "success": "La clé d’accès a été supprimée.",
+            "confirmTitle": "Supprimer la clé d’accès",
+            "confirmText": "Voulez-vous vraiment supprimer la clé d’accès <strong>%name%</strong> ? Vous ne pourrez plus vous connecter avec elle.",
+            "cancel": "Annuler",
+            "confirm": "Supprimer la clé d’accès"
+        },
+        "mail": {
+            "subject": "Une nouvelle clé d’accès a été ajoutée à votre compte",
+            "preHeader": "Une nouvelle clé d’accès a été ajoutée à votre compte client.",
+            "text": "une nouvelle clé d’accès vient d’être ajoutée à votre compte client :",
+            "ifYou": "Si c’était vous, vous n’avez rien d’autre à faire.",
+            "ifNotYou": "Si ce n’était pas vous, veuillez supprimer immédiatement la clé d’accès dans votre compte et changer votre mot de passe :",
+            "manage": "Gérer les clés d’accès"
+        },
+        "passwordLogin": {
+            "description": "Vous vous connectez uniquement avec des clés d’accès ? Vous pouvez alors désactiver la connexion par mot de passe pour votre compte. Un mot de passe volé ne suffit alors plus pour accéder à votre compte.",
+            "disable": "Désactiver la connexion par mot de passe",
+            "disabledInfo": "La connexion par mot de passe est désactivée pour votre compte, vous vous connectez uniquement avec des clés d’accès. La fonction « Mot de passe oublié » réactive automatiquement la connexion par mot de passe.",
+            "enable": "Réactiver la connexion par mot de passe",
+            "disabledSuccess": "La connexion par mot de passe a été désactivée.",
+            "enabledSuccess": "La connexion par mot de passe a été réactivée.",
+            "errorNoPasskey": "Veuillez d’abord ajouter une clé d’accès.",
+            "reEnabledLastPasskey": "Comme vous n’avez plus de clé d’accès, la connexion par mot de passe a été réactivée."
+        }
+    }
+}
