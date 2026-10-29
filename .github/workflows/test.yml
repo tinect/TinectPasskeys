@@ -10,77 +10,18 @@ on:
     - cron: "5 15 * * *"
 
 jobs:
-  get-matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.matrix.outputs.matrix }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Get Shopware Version
-        id: shopware-constraint
-        run: echo "shopware_constraint=$(cat composer.json | jq -r '.require."shopware/core"')" >> $GITHUB_OUTPUT
-
-      - name: Get Shopware Matrix
-        uses: tinect/github-shopware-matrix-generator@main
-        id: matrix
-        with:
-          versionConstraint: ${{ steps.shopware-constraint.outputs.shopware_constraint }}
-          allowEol: false
-          justMinMaxShopware: true
-          allowShopwareNext: true
-          allowShopwareRC: true
-
   validate:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        checkAgainst: [lowest, highest]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # same commands as for local development, see "scripts" in composer.json
       - name: Validate extension
-        run: docker run --rm -v ${{ github.workspace }}:/ext shopware/shopware-cli:latest extension validate --check-against ${{ matrix.checkAgainst }} --full /ext
+        run: composer check
 
-  test:
-    env:
-      PLUGIN_NAME: TinectPasskeys
-    needs: get-matrix
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.get-matrix.outputs.matrix) }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup Shopware
-        uses: shopware/setup-shopware@main
-        with:
-          shopware-version: ${{ matrix.shopware }}
-          php-version: ${{ matrix.php }}
-          php-extensions: pcov
-          install: true
-          allow-insecure-versions: true
-
-      - name: Info
+      - name: Check formatting
         run: |
-          php bin/console -V
-          mysql -V
-          php -v
+          composer format
+          git diff --exit-code
 
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          path: ${{ github.workspace }}/custom/plugins/${{ env.PLUGIN_NAME }}
-
-      - name: Install plugin
-        working-directory: ${{ github.workspace }}
-        run: |
-          composer require tinect/passkeys
-          php bin/console plugin:refresh
-          php bin/console plugin:install --activate ${{ env.PLUGIN_NAME }}
-
-      - name: PHPStan
-        working-directory: ${{ github.workspace }}
-        run: ${{ github.workspace }}/vendor/bin/phpstan analyse -c ${{ github.workspace }}/custom/plugins/${{ env.PLUGIN_NAME }}/phpstan.neon

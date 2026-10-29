@@ -169,7 +169,13 @@ class WebauthnService
             throw new \RuntimeException('Passkey challenge expired');
         }
 
-        return $this->getSerializer()->deserialize($pending['options'], $class, 'json');
+        $options = $this->getSerializer()->deserialize($pending['options'], $class, 'json');
+
+        if (!$options instanceof $class) {
+            throw new \RuntimeException('Invalid pending passkey challenge');
+        }
+
+        return $options;
     }
 
     private function storeOptions(Request $request, string $key, PublicKeyCredentialCreationOptions|PublicKeyCredentialRequestOptions $options): string
