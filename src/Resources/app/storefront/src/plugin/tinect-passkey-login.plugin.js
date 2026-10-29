@@ -46,7 +46,10 @@ export default class TinectPasskeyLoginPlugin extends window.PluginBaseClass {
     }
 
     async _startConditionalLogin() {
-        if (!this._form?.querySelector('input[autocomplete~="webauthn"]') || !(await isConditionalMediationAvailable())) {
+        if (
+            !this._form?.querySelector('input[autocomplete~="webauthn"]') ||
+            !(await isConditionalMediationAvailable())
+        ) {
             return;
         }
 
@@ -106,7 +109,9 @@ export default class TinectPasskeyLoginPlugin extends window.PluginBaseClass {
         const result = await postForm(this.options.loginUrl, {
             credential: serializeCredential(credential),
             redirectTo: this._form?.querySelector('[name="redirectTo"]')?.value,
-            redirectParameters: this._form?.querySelector('[name="redirectParameters"]')?.value,
+            redirectParameters: this._form?.querySelector(
+                '[name="redirectParameters"]'
+            )?.value,
         });
 
         // the indicator stays until the browser has navigated away
@@ -122,7 +127,8 @@ export default class TinectPasskeyLoginPlugin extends window.PluginBaseClass {
             return;
         }
 
-        this._error.textContent = error?.serverMessage || this.options.errorMessage;
+        this._error.textContent =
+            error?.serverMessage || this.options.errorMessage;
         this._error.classList.remove(this.options.invisibleClass);
     }
 

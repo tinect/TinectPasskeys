@@ -11,13 +11,22 @@
     },
     "extra": {
         "shopware-plugin-class": "Tinect\\Passkeys\\TinectPasskeys",
+        "plugin-icon": "src/Resources/config/plugin.png",
         "label": {
             "de-DE": "Passkeys",
             "en-GB": "Passkeys"
         },
         "description": {
-            "de-DE": "Ermöglicht Kunden die Anmeldung im Storefront per Passkey (WebAuthn).",
-            "en-GB": "Allows customers to log in to the storefront using passkeys (WebAuthn)."
+            "de-DE": "Kunden melden sich im Storefront per Passkey (WebAuthn) statt mit Passwort an, verwalten ihre Passkeys im Kundenkonto und werden per E-Mail über Änderungen informiert.",
+            "en-GB": "Let customers log in to the storefront with passkeys (WebAuthn) instead of a password, manage their passkeys in the account and get notified by e-mail about changes."
+        },
+        "manufacturerLink": {
+            "de-DE": "https://github.com/tinect",
+            "en-GB": "https://github.com/tinect"
+        },
+        "supportLink": {
+            "de-DE": "https://github.com/tinect/TinectPasskeys/issues",
+            "en-GB": "https://github.com/tinect/TinectPasskeys/issues"
         }
     },
     "require": {

@@ -1,7 +1,11 @@
 const { ApiService } = Shopware.Classes;
 
 export default class TinectPasskeyApiService extends ApiService {
-    constructor(httpClient, loginService, apiEndpoint = '_action/tinect-passkeys') {
+    constructor(
+        httpClient,
+        loginService,
+        apiEndpoint = '_action/tinect-passkeys'
+    ) {
         super(httpClient, loginService, apiEndpoint);
     }
 
@@ -15,17 +19,24 @@ export default class TinectPasskeyApiService extends ApiService {
 
     enableCustomerPasswordLogin(customerId) {
         return this.httpClient
-            .post(`${this.getApiBasePath()}/customer/${customerId}/enable-password-login`, {}, {
-                headers: this.getBasicHeaders(),
-            })
+            .post(
+                `${this.getApiBasePath()}/customer/${customerId}/enable-password-login`,
+                {},
+                {
+                    headers: this.getBasicHeaders(),
+                }
+            )
             .then((response) => ApiService.handleResponse(response));
     }
 
     deleteCustomerPasskey(customerId, passkeyId) {
         return this.httpClient
-            .delete(`${this.getApiBasePath()}/customer/${customerId}/${passkeyId}`, {
-                headers: this.getBasicHeaders(),
-            })
+            .delete(
+                `${this.getApiBasePath()}/customer/${customerId}/${passkeyId}`,
+                {
+                    headers: this.getBasicHeaders(),
+                }
+            )
             .then((response) => ApiService.handleResponse(response));
     }
 }

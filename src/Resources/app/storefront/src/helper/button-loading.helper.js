@@ -22,7 +22,9 @@ export function setButtonLoading(button, loading) {
         return;
     }
 
-    button.querySelectorAll(`.${LOADER_CLASS}`).forEach((loader) => loader.remove());
+    button
+        .querySelectorAll(`.${LOADER_CLASS}`)
+        .forEach((loader) => loader.remove());
     button.classList.remove(LOADING_CLASS);
     button.disabled = false;
 }

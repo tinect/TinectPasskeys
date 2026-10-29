@@ -12,7 +12,6 @@
         :closable="false"
     >
         {{ $t('tinect-passkeys.customerCard.passwordLoginDisabled') }}
-
         <mt-button
             v-if="acl.can('customer.editor')"
             class="tinect-passkey-customer-card__enable-password-login"
@@ -23,7 +22,6 @@
             {{ $t('tinect-passkeys.customerCard.actionEnablePasswordLogin') }}
         </mt-button>
     </mt-banner>
-
     <template
         v-if="passkeys.length > 0"
         #grid
@@ -52,15 +50,15 @@
                 </sw-context-menu-item>
             </template>
         </sw-data-grid>
-
         <sw-modal
             v-if="passkeyToDelete"
             :title="$t('global.default.warning')"
             variant="small"
             @modal-close="passkeyToDelete = null"
         >
-            <p>{{ $t('tinect-passkeys.customerCard.deleteConfirm', { name: passkeyToDelete.name }) }}</p>
-
+            <p>
+                {{ $t('tinect-passkeys.customerCard.deleteConfirm', { name: passkeyToDelete.name }) }}
+            </p>
             <template #modal-footer>
                 <mt-button
                     size="small"
@@ -69,7 +67,6 @@
                 >
                     {{ $t('global.default.cancel') }}
                 </mt-button>
-
                 <mt-button
                     size="small"
                     variant="critical"
@@ -80,19 +77,18 @@
             </template>
         </sw-modal>
     </template>
-
     <p v-else-if="!isLoading">
         {{ $t('tinect-passkeys.customerCard.empty') }}
     </p>
-
     <sw-modal
         v-if="showEnablePasswordLoginModal"
         :title="$t('global.default.warning')"
         variant="small"
         @modal-close="showEnablePasswordLoginModal = false"
     >
-        <p>{{ $t('tinect-passkeys.customerCard.enablePasswordLoginConfirm') }}</p>
-
+        <p>
+            {{ $t('tinect-passkeys.customerCard.enablePasswordLoginConfirm') }}
+        </p>
         <template #modal-footer>
             <mt-button
                 size="small"
@@ -101,7 +97,6 @@
             >
                 {{ $t('global.default.cancel') }}
             </mt-button>
-
             <mt-button
                 size="small"
                 variant="primary"

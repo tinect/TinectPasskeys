@@ -1,6 +1,9 @@
 function base64UrlToBuffer(value) {
     const base64 = value.replace(/-/g, '+').replace(/_/g, '/');
-    const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), '=');
+    const padded = base64.padEnd(
+        base64.length + ((4 - (base64.length % 4)) % 4),
+        '='
+    );
     const binary = window.atob(padded);
 
     return Uint8Array.from(binary, (char) => char.charCodeAt(0)).buffer;
@@ -9,7 +12,11 @@ function base64UrlToBuffer(value) {
 function bufferToBase64Url(buffer) {
     const binary = String.fromCharCode(...new Uint8Array(buffer));
 
-    return window.btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    return window
+        .btoa(binary)
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '');
 }
 
 function decodeDescriptors(descriptors = []) {
@@ -20,11 +27,18 @@ function decodeDescriptors(descriptors = []) {
 }
 
 export function isPasskeySupported() {
-    return typeof window.PublicKeyCredential === 'function' && !!navigator.credentials;
+    return (
+        typeof window.PublicKeyCredential === 'function' &&
+        !!navigator.credentials
+    );
 }
 
 export async function isConditionalMediationAvailable() {
-    if (!isPasskeySupported() || typeof PublicKeyCredential.isConditionalMediationAvailable !== 'function') {
+    if (
+        !isPasskeySupported() ||
+        typeof PublicKeyCredential.isConditionalMediationAvailable !==
+            'function'
+    ) {
         return false;
     }
 
@@ -32,7 +46,9 @@ export async function isConditionalMediationAvailable() {
 }
 
 export function parseCreationOptions(options) {
-    if (typeof PublicKeyCredential.parseCreationOptionsFromJSON === 'function') {
+    if (
+        typeof PublicKeyCredential.parseCreationOptionsFromJSON === 'function'
+    ) {
         return PublicKeyCredential.parseCreationOptionsFromJSON(options);
     }
 
@@ -66,16 +82,22 @@ export function serializeCredential(credential) {
     };
 
     if (credential.response.attestationObject) {
-        response.attestationObject = bufferToBase64Url(credential.response.attestationObject);
+        response.attestationObject = bufferToBase64Url(
+            credential.response.attestationObject
+        );
         response.transports = credential.response.getTransports?.() ?? [];
     }
 
     if (credential.response.authenticatorData) {
-        response.authenticatorData = bufferToBase64Url(credential.response.authenticatorData);
+        response.authenticatorData = bufferToBase64Url(
+            credential.response.authenticatorData
+        );
         response.signature = bufferToBase64Url(credential.response.signature);
 
         if (credential.response.userHandle) {
-            response.userHandle = bufferToBase64Url(credential.response.userHandle);
+            response.userHandle = bufferToBase64Url(
+                credential.response.userHandle
+            );
         }
     }
 
@@ -91,7 +113,9 @@ export function serializeCredential(credential) {
 
 export async function postForm(url, data) {
     const body = new FormData();
-    Object.entries(data).forEach(([key, value]) => body.append(key, value ?? ''));
+    Object.entries(data).forEach(([key, value]) =>
+        body.append(key, value ?? '')
+    );
 
     const response = await fetch(url, {
         method: 'POST',

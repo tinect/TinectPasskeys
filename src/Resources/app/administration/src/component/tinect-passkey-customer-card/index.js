@@ -34,11 +34,15 @@ export default {
                 },
                 {
                     property: 'createdAt',
-                    label: this.$t('tinect-passkeys.customerCard.columnCreatedAt'),
+                    label: this.$t(
+                        'tinect-passkeys.customerCard.columnCreatedAt'
+                    ),
                 },
                 {
                     property: 'lastUsedAt',
-                    label: this.$t('tinect-passkeys.customerCard.columnLastUsedAt'),
+                    label: this.$t(
+                        'tinect-passkeys.customerCard.columnLastUsedAt'
+                    ),
                 },
             ];
         },
@@ -66,7 +70,10 @@ export default {
             this.isLoading = true;
 
             try {
-                const result = await this.tinectPasskeyApiService.getCustomerPasskeys(this.customerId);
+                const result =
+                    await this.tinectPasskeyApiService.getCustomerPasskeys(
+                        this.customerId
+                    );
 
                 this.passkeys = result.passkeys;
                 this.passwordLoginDisabled = result.passwordLoginDisabled;
@@ -80,13 +87,19 @@ export default {
             this.isLoading = true;
 
             try {
-                await this.tinectPasskeyApiService.enableCustomerPasswordLogin(this.customerId);
+                await this.tinectPasskeyApiService.enableCustomerPasswordLogin(
+                    this.customerId
+                );
                 this.createNotificationSuccess({
-                    message: this.$t('tinect-passkeys.customerCard.notificationPasswordLoginEnabled'),
+                    message: this.$t(
+                        'tinect-passkeys.customerCard.notificationPasswordLoginEnabled'
+                    ),
                 });
             } catch {
                 this.createNotificationError({
-                    message: this.$t('tinect-passkeys.customerCard.notificationPasswordLoginError'),
+                    message: this.$t(
+                        'tinect-passkeys.customerCard.notificationPasswordLoginError'
+                    ),
                 });
             } finally {
                 await this.loadPasskeys();
@@ -97,13 +110,20 @@ export default {
             this.isLoading = true;
 
             try {
-                await this.tinectPasskeyApiService.deleteCustomerPasskey(this.customerId, passkey.id);
+                await this.tinectPasskeyApiService.deleteCustomerPasskey(
+                    this.customerId,
+                    passkey.id
+                );
                 this.createNotificationSuccess({
-                    message: this.$t('tinect-passkeys.customerCard.notificationDeleteSuccess'),
+                    message: this.$t(
+                        'tinect-passkeys.customerCard.notificationDeleteSuccess'
+                    ),
                 });
             } catch {
                 this.createNotificationError({
-                    message: this.$t('tinect-passkeys.customerCard.notificationDeleteError'),
+                    message: this.$t(
+                        'tinect-passkeys.customerCard.notificationDeleteError'
+                    ),
                 });
             } finally {
                 this.passkeyToDelete = null;

@@ -7,7 +7,9 @@ import {
     serializeCredential,
 } from '../helper/webauthn.helper';
 
-export default class TinectPasskeyRegisterPlugin extends window.PluginBaseClass {
+export default class TinectPasskeyRegisterPlugin
+    extends window.PluginBaseClass
+{
     static options = {
         /** Url to fetch the creation options */
         optionsUrl: '',
@@ -33,7 +35,9 @@ export default class TinectPasskeyRegisterPlugin extends window.PluginBaseClass 
         this._submitButton = this.el.querySelector('[type="submit"]');
 
         if (!isPasskeySupported()) {
-            this.el.querySelector(this.options.unsupportedSelector)?.classList.remove(this.options.invisibleClass);
+            this.el
+                .querySelector(this.options.unsupportedSelector)
+                ?.classList.remove(this.options.invisibleClass);
             this._submitButton.disabled = true;
 
             return;
@@ -52,7 +56,9 @@ export default class TinectPasskeyRegisterPlugin extends window.PluginBaseClass 
         const nameInput = this.el.querySelector('[name="name"]');
 
         try {
-            const options = await postForm(this.options.optionsUrl, { password: passwordInput.value });
+            const options = await postForm(this.options.optionsUrl, {
+                password: passwordInput.value,
+            });
             passwordInput.value = '';
 
             const credential = await navigator.credentials.create({
@@ -70,7 +76,8 @@ export default class TinectPasskeyRegisterPlugin extends window.PluginBaseClass 
             setButtonLoading(this._submitButton, false);
 
             if (!isAbortError(error)) {
-                this._error.textContent = error?.serverMessage || this.options.errorMessage;
+                this._error.textContent =
+                    error?.serverMessage || this.options.errorMessage;
                 this._error.classList.remove(this.options.invisibleClass);
             }
         }
