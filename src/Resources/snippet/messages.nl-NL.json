@@ -68,7 +68,9 @@
             "disableConfirmText": "Wilt u inloggen met wachtwoord echt uitschakelen? U logt daarna alleen nog in met uw passkey. Via „Wachtwoord vergeten” kunt u het op elk moment weer inschakelen.",
             "disableConfirm": "Ja, uitschakelen",
             "enableConfirmText": "Wilt u inloggen met wachtwoord echt weer inschakelen? Uw account is dan ook weer met uw wachtwoord toegankelijk.",
-            "enableConfirm": "Ja, weer inschakelen"
+            "enableConfirm": "Ja, weer inschakelen",
+            "confirmWithPasskey": "Voor uw veiligheid bevestigt u de wijziging daarna met uw passkey.",
+            "errorConfirmation": "De bevestiging met uw passkey is mislukt. Probeer het opnieuw."
         }
     }
 }

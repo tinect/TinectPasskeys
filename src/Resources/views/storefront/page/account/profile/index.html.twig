@@ -134,7 +134,9 @@
                                         </div>
 
                                         <div class="modal-body">
-                                            {{ ('tinect-passkeys.passwordLogin.' ~ tinectPasswordLoginAction ~ 'ConfirmText')|trans|sw_sanitize }}
+                                            <p>{{ ('tinect-passkeys.passwordLogin.' ~ tinectPasswordLoginAction ~ 'ConfirmText')|trans|sw_sanitize }}</p>
+                                            <p class="mb-0 small text-muted">{{ 'tinect-passkeys.passwordLogin.confirmWithPasskey'|trans|sw_sanitize }}</p>
+                                            <div class="tinect-passkey-confirm-error alert alert-danger mt-3 mb-0 d-none" role="alert"></div>
                                         </div>
 
                                         <div class="modal-footer">
@@ -144,8 +146,16 @@
                                                 {{ 'tinect-passkeys.delete.cancel'|trans|sw_sanitize }}
                                             </button>
 
+                                            {% set tinectPasskeyConfirmOptions = {
+                                                optionsUrl: path('frontend.tinect-passkeys.confirm.options'),
+                                                errorMessage: 'tinect-passkeys.passwordLogin.errorConfirmation'|trans|striptags,
+                                                unsupportedMessage: 'tinect-passkeys.register.unsupported'|trans|striptags,
+                                            } %}
+
                                             <form action="{{ path('frontend.tinect-passkeys.password-login') }}"
-                                                  method="post">
+                                                  method="post"
+                                                  data-tinect-passkey-confirm="true"
+                                                  data-tinect-passkey-confirm-options="{{ tinectPasskeyConfirmOptions|json_encode }}">
                                                 <input type="hidden" name="disabled" value="{{ tinectPasswordLoginDisabled ? '0' : '1' }}">
                                                 <button type="submit" class="btn btn-primary">
                                                     {{ ('tinect-passkeys.passwordLogin.' ~ tinectPasswordLoginAction ~ 'Confirm')|trans|sw_sanitize }}

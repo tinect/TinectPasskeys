@@ -68,7 +68,9 @@
             "disableConfirmText": "Do you really want to disable the password login? Afterwards, you log in with your passkey only. You can enable it again at any time using \"Forgot password\".",
             "disableConfirm": "Yes, disable",
             "enableConfirmText": "Do you really want to enable the password login again? Your account is then accessible with your password again.",
-            "enableConfirm": "Yes, enable again"
+            "enableConfirm": "Yes, enable again",
+            "confirmWithPasskey": "For your security, you confirm the change with your passkey afterwards.",
+            "errorConfirmation": "The confirmation with your passkey failed. Please try again."
         }
     }
 }

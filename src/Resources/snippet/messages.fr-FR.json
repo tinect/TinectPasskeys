@@ -68,7 +68,9 @@
             "disableConfirmText": "Voulez-vous vraiment désactiver la connexion par mot de passe ? Vous vous connecterez ensuite uniquement avec votre clé d’accès. Vous pouvez la réactiver à tout moment via « Mot de passe oublié ».",
             "disableConfirm": "Oui, désactiver",
             "enableConfirmText": "Voulez-vous vraiment réactiver la connexion par mot de passe ? Votre compte sera alors de nouveau accessible avec votre mot de passe.",
-            "enableConfirm": "Oui, réactiver"
+            "enableConfirm": "Oui, réactiver",
+            "confirmWithPasskey": "Pour votre sécurité, vous confirmez ensuite la modification avec votre clé d’accès.",
+            "errorConfirmation": "La confirmation avec votre clé d’accès a échoué. Veuillez réessayer."
         }
     }
 }

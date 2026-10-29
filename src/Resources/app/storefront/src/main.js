@@ -9,3 +9,9 @@ window.PluginManager.register(
     () => import('./plugin/tinect-passkey-register.plugin'),
     '[data-tinect-passkey-register]'
 );
+
+window.PluginManager.register(
+    'TinectPasskeyConfirm',
+    () => import('./plugin/tinect-passkey-confirm.plugin'),
+    '[data-tinect-passkey-confirm]'
+);

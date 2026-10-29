@@ -68,7 +68,9 @@
             "disableConfirmText": "Möchten Sie die Anmeldung per Passwort wirklich deaktivieren? Sie melden sich danach nur noch mit Ihrem Passkey an. Über „Passwort vergessen“ können Sie sie jederzeit wieder aktivieren.",
             "disableConfirm": "Ja, deaktivieren",
             "enableConfirmText": "Möchten Sie die Anmeldung per Passwort wirklich wieder aktivieren? Ihr Konto ist dann auch wieder mit Ihrem Passwort zugänglich.",
-            "enableConfirm": "Ja, wieder aktivieren"
+            "enableConfirm": "Ja, wieder aktivieren",
+            "confirmWithPasskey": "Zur Sicherheit bestätigen Sie die Änderung anschließend mit Ihrem Passkey.",
+            "errorConfirmation": "Die Bestätigung mit Ihrem Passkey ist fehlgeschlagen. Bitte versuchen Sie es erneut."
         }
     }
 }

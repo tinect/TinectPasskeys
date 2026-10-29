@@ -7,6 +7,7 @@ use Shopware\Core\Checkout\Customer\Exception\CustomerNotFoundException;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractLoginRoute;
 use Shopware\Core\Checkout\Customer\SalesChannel\AccountService;
 use Shopware\Core\Checkout\Customer\SalesChannel\LoginRoute;
+use Shopware\Core\Checkout\Customer\Service\EmailIdnConverter;
 use Shopware\Core\Framework\RateLimiter\Exception\RateLimitExceededException;
 use Shopware\Core\Framework\RateLimiter\RateLimiter;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
@@ -46,6 +47,9 @@ class PasswordLoginRouteDecorator extends AbstractLoginRoute
 
     public function login(#[\SensitiveParameter] RequestDataBag $data, SalesChannelContext $context): ContextTokenResponse
     {
+        // same normalization as LoginRoute, customers are stored with the punycode domain
+        EmailIdnConverter::encodeDataBag($data);
+        EmailIdnConverter::encodeDataBag($data, 'username');
         $email = $data->getString('email', $data->getString('username'));
 
         if ($email !== '' && $this->isPasswordLoginDisabled($email, $context)) {

@@ -242,20 +242,53 @@ class PasskeyController extends StorefrontController
     }
 
     #[Route(
-        path: '/account/passkey/password-login',
-        name: 'frontend.tinect-passkeys.password-login',
-        defaults: [PlatformRequest::ATTRIBUTE_LOGIN_REQUIRED => true],
+        path: '/account/passkey/confirm/options',
+        name: 'frontend.tinect-passkeys.confirm.options',
+        defaults: ['XmlHttpRequest' => true, PlatformRequest::ATTRIBUTE_LOGIN_REQUIRED => true, PlatformRequest::ATTRIBUTE_NO_STORE => true],
         methods: [Request::METHOD_POST]
     )]
-    public function passwordLogin(Request $request, SalesChannelContext $context): Response
+    public function confirmOptions(Request $request, SalesChannelContext $context): Response
+    {
+        $customerId = $this->getLoggedInCustomer($context)->getId();
+        $credentials = array_column($this->passkeyRepository->findByCustomerId($customerId), 'credential');
+
+        if ($credentials === []) {
+            return $this->createErrorResponse('tinect-passkeys.passwordLogin.errorNoPasskey');
+        }
+
+        return $this->createJsonStringResponse(
+            $this->webauthnService->createRequestOptions($request, $credentials, WebauthnService::PURPOSE_CONFIRM)
+        );
+    }
+
+    /**
+     * Changing the password login has to be confirmed with one of the customer's passkeys, so a hijacked session is not enough.
+     */
+    #[Route(
+        path: '/account/passkey/password-login',
+        name: 'frontend.tinect-passkeys.password-login',
+        defaults: ['XmlHttpRequest' => true, PlatformRequest::ATTRIBUTE_LOGIN_REQUIRED => true, PlatformRequest::ATTRIBUTE_NO_STORE => true],
+        methods: [Request::METHOD_POST]
+    )]
+    public function passwordLogin(Request $request, SalesChannelContext $context): JsonResponse
     {
         $customerId = $this->getLoggedInCustomer($context)->getId();
         $disable = $request->request->getBoolean('disabled');
 
-        if ($disable && !$this->passwordLoginService->disable($customerId, $context)) {
-            $this->addFlash(self::DANGER, $this->trans('tinect-passkeys.passwordLogin.errorNoPasskey'));
+        try {
+            $this->confirmWithPasskey($request, $customerId, $request->request->getString('credential'));
+        } catch (\Throwable $exception) {
+            $this->logger->warning('Passkey confirmation failed', [
+                'customerId' => $customerId,
+                'reason' => $exception->getMessage(),
+                'exceptionClass' => $exception::class,
+            ]);
 
-            return $this->redirectToRoute('frontend.account.profile.page', ['_fragment' => 'tinect-passkeys']);
+            return $this->createErrorResponse('tinect-passkeys.passwordLogin.errorConfirmation');
+        }
+
+        if ($disable && !$this->passwordLoginService->disable($customerId, $context)) {
+            return $this->createErrorResponse('tinect-passkeys.passwordLogin.errorNoPasskey');
         }
 
         if (!$disable) {
@@ -264,7 +297,31 @@ class PasskeyController extends StorefrontController
 
         $this->addFlash(self::SUCCESS, $this->trans($disable ? 'tinect-passkeys.passwordLogin.disabledSuccess' : 'tinect-passkeys.passwordLogin.enabledSuccess'));
 
-        return $this->redirectToRoute('frontend.account.profile.page', ['_fragment' => 'tinect-passkeys']);
+        return new JsonResponse(['success' => true]);
+    }
+
+    /**
+     * @throws \Throwable when the passkey does not belong to the customer or the assertion is invalid
+     */
+    private function confirmWithPasskey(Request $request, string $customerId, string $credentialJson): void
+    {
+        $passkey = $this->passkeyRepository->findByCredentialId(
+            $this->webauthnService->getAssertionCredentialId($credentialJson)
+        );
+
+        if ($passkey === null || $passkey['customerId'] !== $customerId) {
+            throw new \RuntimeException('Passkey does not belong to the customer');
+        }
+
+        $credentialRecord = $this->webauthnService->verifyAssertion(
+            $request,
+            $credentialJson,
+            $passkey['credential'],
+            $customerId,
+            WebauthnService::PURPOSE_CONFIRM
+        );
+
+        $this->passkeyRepository->updateAfterLogin($passkey['id'], $this->webauthnService->serialize($credentialRecord));
     }
 
     private function getLoggedInCustomer(SalesChannelContext $context): CustomerEntity

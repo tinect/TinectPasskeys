@@ -26,8 +26,15 @@ use Webauthn\PublicKeyCredentialUserEntity;
 
 class WebauthnService
 {
+    final public const PURPOSE_LOGIN = 'login';
+
+    /**
+     * Confirms a sensitive account change of the logged-in customer with one of their passkeys
+     */
+    final public const PURPOSE_CONFIRM = 'confirm';
+
     private const SESSION_CREATION_OPTIONS = 'tinect_passkeys.creation_options';
-    private const SESSION_REQUEST_OPTIONS = 'tinect_passkeys.request_options';
+    private const SESSION_REQUEST_OPTIONS = 'tinect_passkeys.request_options.';
     private const TIMEOUT = 300_000;
     private const ALGORITHM_ES256 = -7;
     private const ALGORITHM_RS256 = -257;
@@ -88,16 +95,24 @@ class WebauthnService
             ->check($response, $options, $request->getHost());
     }
 
-    public function createRequestOptions(Request $request): string
+    /**
+     * @param list<string> $allowedCredentials JSON encoded credential records, empty allows any discoverable passkey
+     * @param self::PURPOSE_* $purpose separate challenges, so a pending login does not invalidate a confirmation
+     */
+    public function createRequestOptions(Request $request, array $allowedCredentials = [], string $purpose = self::PURPOSE_LOGIN): string
     {
         $options = PublicKeyCredentialRequestOptions::create(
             random_bytes(32),
             rpId: $request->getHost(),
+            allowCredentials: array_map(
+                fn (string $credential): PublicKeyCredentialDescriptor => $this->deserializeCredentialRecord($credential)->getPublicKeyCredentialDescriptor(),
+                $allowedCredentials
+            ),
             userVerification: PublicKeyCredentialRequestOptions::USER_VERIFICATION_REQUIREMENT_REQUIRED,
             timeout: self::TIMEOUT,
         );
 
-        return $this->storeOptions($request, self::SESSION_REQUEST_OPTIONS, $options);
+        return $this->storeOptions($request, self::SESSION_REQUEST_OPTIONS . $purpose, $options);
     }
 
     /**
@@ -109,11 +124,13 @@ class WebauthnService
     }
 
     /**
+     * @param self::PURPOSE_* $purpose
+     *
      * @throws \Throwable when the response could not be verified
      */
-    public function verifyAssertion(Request $request, string $credentialJson, string $storedCredential, string $customerId): CredentialRecord
+    public function verifyAssertion(Request $request, string $credentialJson, string $storedCredential, string $customerId, string $purpose = self::PURPOSE_LOGIN): CredentialRecord
     {
-        $options = $this->popOptions($request, self::SESSION_REQUEST_OPTIONS, PublicKeyCredentialRequestOptions::class);
+        $options = $this->popOptions($request, self::SESSION_REQUEST_OPTIONS . $purpose, PublicKeyCredentialRequestOptions::class);
         $response = $this->deserializePublicKeyCredential($credentialJson)->response;
 
         if (!$response instanceof AuthenticatorAssertionResponse) {
