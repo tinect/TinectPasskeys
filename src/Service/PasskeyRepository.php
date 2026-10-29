@@ -73,23 +73,16 @@ readonly class PasskeyRepository
     }
 
     /**
-     * Deletes the passkey of the customer. When it was the last one, the password login is enabled again,
-     * so the customer can not lock themselves out.
+     * Use PasswordLoginService::removePasskey(), which keeps the password login setting consistent.
      *
      * @return int number of deleted passkeys
      */
     public function delete(string $id, string $customerId): int
     {
-        $deleted = (int) $this->connection->delete('tinect_passkey', [
+        return (int) $this->connection->delete('tinect_passkey', [
             'id' => Uuid::fromHexToBytes($id),
             'customer_id' => Uuid::fromHexToBytes($customerId),
         ]);
-
-        if ($deleted > 0 && $this->countByCustomerId($customerId) === 0) {
-            $this->setPasswordLoginDisabled($customerId, false);
-        }
-
-        return $deleted;
     }
 
     public function countByCustomerId(string $customerId): int
@@ -110,8 +103,17 @@ readonly class PasskeyRepository
         );
     }
 
-    public function setPasswordLoginDisabled(string $customerId, bool $disabled): void
+    /**
+     * Use PasswordLoginService, which also dispatches the flow events.
+     *
+     * @return bool true when the setting has changed
+     */
+    public function setPasswordLoginDisabled(string $customerId, bool $disabled): bool
     {
+        if ($this->isPasswordLoginDisabled($customerId) === $disabled) {
+            return false;
+        }
+
         $now = $this->now();
 
         $this->connection->executeStatement(
@@ -120,6 +122,8 @@ readonly class PasskeyRepository
              ON DUPLICATE KEY UPDATE `password_login_disabled` = :disabled, `updated_at` = :now',
             ['customerId' => Uuid::fromHexToBytes($customerId), 'disabled' => (int) $disabled, 'now' => $now]
         );
+
+        return true;
     }
 
     private function now(): string

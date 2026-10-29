@@ -95,28 +95,67 @@
 
                 {% block page_account_profile_passkeys_password_login %}
                     {% if tinectPasskeys is not empty %}
-                        <form class="tinect-passkey-password-login mb-4"
-                              action="{{ path('frontend.tinect-passkeys.password-login') }}"
-                              method="post">
+                        {% set tinectPasswordLoginAction = tinectPasswordLoginDisabled ? 'enable' : 'disable' %}
+
+                        <div class="tinect-passkey-password-login mb-4">
                             {% if tinectPasswordLoginDisabled %}
                                 {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
                                     type: 'info',
                                     content: 'tinect-passkeys.passwordLogin.disabledInfo'|trans|sw_sanitize
                                 } %}
-
-                                <input type="hidden" name="disabled" value="0">
-                                <button type="submit" class="btn btn-outline-secondary">
-                                    {{ 'tinect-passkeys.passwordLogin.enable'|trans|sw_sanitize }}
-                                </button>
                             {% else %}
                                 <p class="mb-2">{{ 'tinect-passkeys.passwordLogin.description'|trans|sw_sanitize }}</p>
-
-                                <input type="hidden" name="disabled" value="1">
-                                <button type="submit" class="btn btn-outline-primary">
-                                    {{ 'tinect-passkeys.passwordLogin.disable'|trans|sw_sanitize }}
-                                </button>
                             {% endif %}
-                        </form>
+
+                            <button type="button"
+                                    class="btn {{ tinectPasswordLoginDisabled ? 'btn-outline-secondary' : 'btn-outline-primary' }}"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#tinectPasswordLoginModal">
+                                {{ ('tinect-passkeys.passwordLogin.' ~ tinectPasswordLoginAction)|trans|sw_sanitize }}
+                            </button>
+                        </div>
+
+                        {% block page_account_profile_passkeys_password_login_modal %}
+                            <div class="modal fade"
+                                 id="tinectPasswordLoginModal"
+                                 tabindex="-1"
+                                 aria-labelledby="tinectPasswordLoginModalTitle"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h2 class="modal-title h5" id="tinectPasswordLoginModalTitle">
+                                                {{ ('tinect-passkeys.passwordLogin.' ~ tinectPasswordLoginAction)|trans|sw_sanitize }}
+                                            </h2>
+                                            <button type="button"
+                                                    class="btn-close"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="{{ 'global.default.close'|trans|striptags }}"></button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            {{ ('tinect-passkeys.passwordLogin.' ~ tinectPasswordLoginAction ~ 'ConfirmText')|trans|sw_sanitize }}
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button"
+                                                    class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">
+                                                {{ 'tinect-passkeys.delete.cancel'|trans|sw_sanitize }}
+                                            </button>
+
+                                            <form action="{{ path('frontend.tinect-passkeys.password-login') }}"
+                                                  method="post">
+                                                <input type="hidden" name="disabled" value="{{ tinectPasswordLoginDisabled ? '0' : '1' }}">
+                                                <button type="submit" class="btn btn-primary">
+                                                    {{ ('tinect-passkeys.passwordLogin.' ~ tinectPasswordLoginAction ~ 'Confirm')|trans|sw_sanitize }}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endblock %}
                     {% endif %}
                 {% endblock %}
 

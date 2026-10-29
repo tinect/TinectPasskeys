@@ -9,7 +9,11 @@ The plugin is compatible with Shopware 6.7 and PHP 8.2 and higher.
 - Passkey suggestions directly in the e-mail field (conditional UI), if the login field uses `autocomplete="username webauthn"`
 - Manage passkeys in the customer profile: add (requires the current password), list with last usage, remove (with confirmation)
 - Customers with at least one passkey can disable the password login for their account (storefront and Store API)
-- Security notice by e-mail when a passkey was added, via the flow builder (flow "Passkey added", mail template type "Passkey added")
+- Security notices by e-mail via the flow builder, each with its own flow event, flow and mail template type:
+  - a passkey was added (`tinect_passkeys.passkey.added`)
+  - the password login was disabled (`tinect_passkeys.password_login.disabled`)
+  - the password login was enabled again (`tinect_passkeys.password_login.enabled`), with the reason
+    `customer`, `recovery`, `lastPasskeyRemoved` or `administration`
 - Administration: list and remove passkeys of a customer in the customer detail page, enable the password login again
 - `/.well-known/passkey-endpoints` for password managers
 - User verification is always required, challenges are single-use and expire after 5 minutes

@@ -37,7 +37,24 @@
             "text": "a new passkey was just added to your customer account:",
             "ifYou": "If this was you, there is nothing else to do.",
             "ifNotYou": "If this was not you, please remove the passkey in your account right away and change your password:",
-            "manage": "Manage passkeys"
+            "manage": "Manage passkeys",
+            "passwordLoginDisabled": {
+                "subject": "Password login disabled for your account",
+                "preHeader": "The password login was disabled for your customer account.",
+                "text": "the password login was just disabled for your customer account. From now on, you log in with your passkey only.",
+                "ifNotYou": "If this was not you, please use \"Forgot password\" on the login page right away. This enables the password login again. Then check your passkeys:"
+            },
+            "passwordLoginEnabled": {
+                "subject": "Password login enabled again for your account",
+                "preHeader": "The password login was enabled again for your customer account.",
+                "ifNotYou": "If this was not you, please change your password right away and check your passkeys:",
+                "reason": {
+                    "customer": "the password login for your customer account was just enabled again in your account settings.",
+                    "recovery": "the password login for your customer account was just enabled again, because your password was reset via \"Forgot password\".",
+                    "lastPasskeyRemoved": "the password login for your customer account was just enabled again, because the last passkey was removed.",
+                    "administration": "the password login for your customer account was just enabled again by our customer service."
+                }
+            }
         },
         "passwordLogin": {
             "description": "Do you only log in with passkeys? Then you can disable the password login for your account. A stolen password is then no longer enough to access your account.",
@@ -47,7 +64,11 @@
             "disabledSuccess": "The password login has been disabled.",
             "enabledSuccess": "The password login has been enabled again.",
             "errorNoPasskey": "Please add a passkey first.",
-            "reEnabledLastPasskey": "As you have no passkey left, the password login has been enabled again."
+            "reEnabledLastPasskey": "As you have no passkey left, the password login has been enabled again.",
+            "disableConfirmText": "Do you really want to disable the password login? Afterwards, you log in with your passkey only. You can enable it again at any time using \"Forgot password\".",
+            "disableConfirm": "Yes, disable",
+            "enableConfirmText": "Do you really want to enable the password login again? Your account is then accessible with your password again.",
+            "enableConfirm": "Yes, enable again"
         }
     }
 }

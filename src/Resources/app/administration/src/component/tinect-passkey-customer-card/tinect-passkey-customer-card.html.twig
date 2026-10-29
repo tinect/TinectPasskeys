@@ -18,7 +18,7 @@
             class="tinect-passkey-customer-card__enable-password-login"
             size="small"
             variant="secondary"
-            @click="enablePasswordLogin"
+            @click="showEnablePasswordLoginModal = true"
         >
             {{ $t('tinect-passkeys.customerCard.actionEnablePasswordLogin') }}
         </mt-button>
@@ -84,5 +84,32 @@
     <p v-else-if="!isLoading">
         {{ $t('tinect-passkeys.customerCard.empty') }}
     </p>
+
+    <sw-modal
+        v-if="showEnablePasswordLoginModal"
+        :title="$t('global.default.warning')"
+        variant="small"
+        @modal-close="showEnablePasswordLoginModal = false"
+    >
+        <p>{{ $t('tinect-passkeys.customerCard.enablePasswordLoginConfirm') }}</p>
+
+        <template #modal-footer>
+            <mt-button
+                size="small"
+                variant="secondary"
+                @click="showEnablePasswordLoginModal = false"
+            >
+                {{ $t('global.default.cancel') }}
+            </mt-button>
+
+            <mt-button
+                size="small"
+                variant="primary"
+                @click="enablePasswordLogin"
+            >
+                {{ $t('tinect-passkeys.customerCard.actionEnablePasswordLogin') }}
+            </mt-button>
+        </template>
+    </sw-modal>
 </mt-card>
 {% endblock %}

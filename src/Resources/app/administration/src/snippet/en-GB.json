@@ -14,7 +14,8 @@
             "passwordLoginDisabled": "The customer disabled the password login and only logs in with passkeys.",
             "actionEnablePasswordLogin": "Enable password login again",
             "notificationPasswordLoginEnabled": "The password login has been enabled again.",
-            "notificationPasswordLoginError": "The password login could not be enabled."
+            "notificationPasswordLoginError": "The password login could not be enabled.",
+            "enablePasswordLoginConfirm": "Enable the password login for this customer again? The customer is informed by e-mail."
         }
     }
 }

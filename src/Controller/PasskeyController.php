@@ -24,8 +24,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Tinect\Passkeys\Event\AbstractPasswordLoginEvent;
 use Tinect\Passkeys\Event\PasskeyAddedEvent;
 use Tinect\Passkeys\Service\PasskeyRepository;
+use Tinect\Passkeys\Service\PasswordLoginService;
 use Tinect\Passkeys\Service\WebauthnService;
 
 #[Route(defaults: [PlatformRequest::ATTRIBUTE_ROUTE_SCOPE => [StorefrontRouteScope::ID]])]
@@ -39,6 +41,7 @@ class PasskeyController extends StorefrontController
     public function __construct(
         private readonly WebauthnService $webauthnService,
         private readonly PasskeyRepository $passkeyRepository,
+        private readonly PasswordLoginService $passwordLoginService,
         private readonly AccountService $accountService,
         #[Autowire(service: 'customer.repository')]
         private readonly EntityRepository $customerRepository,
@@ -224,15 +227,15 @@ class PasskeyController extends StorefrontController
     public function delete(string $passkeyId, SalesChannelContext $context): Response
     {
         $customerId = $this->getLoggedInCustomer($context)->getId();
-        $passwordLoginDisabled = $this->passkeyRepository->isPasswordLoginDisabled($customerId);
+        $result = $this->passwordLoginService->removePasskey($passkeyId, $customerId, $context->getContext());
 
-        if ($this->passkeyRepository->delete($passkeyId, $customerId) > 0) {
+        if ($result['deleted']) {
             $this->logger->notice('Passkey removed by customer', ['customerId' => $customerId, 'passkeyId' => $passkeyId]);
             $this->addFlash(self::SUCCESS, $this->trans('tinect-passkeys.delete.success'));
+        }
 
-            if ($passwordLoginDisabled && !$this->passkeyRepository->isPasswordLoginDisabled($customerId)) {
-                $this->addFlash(self::INFO, $this->trans('tinect-passkeys.passwordLogin.reEnabledLastPasskey'));
-            }
+        if ($result['passwordLoginEnabled']) {
+            $this->addFlash(self::INFO, $this->trans('tinect-passkeys.passwordLogin.reEnabledLastPasskey'));
         }
 
         return $this->redirectToRoute('frontend.account.profile.page', ['_fragment' => 'tinect-passkeys']);
@@ -249,14 +252,15 @@ class PasskeyController extends StorefrontController
         $customerId = $this->getLoggedInCustomer($context)->getId();
         $disable = $request->request->getBoolean('disabled');
 
-        if ($disable && $this->passkeyRepository->countByCustomerId($customerId) === 0) {
+        if ($disable && !$this->passwordLoginService->disable($customerId, $context)) {
             $this->addFlash(self::DANGER, $this->trans('tinect-passkeys.passwordLogin.errorNoPasskey'));
 
             return $this->redirectToRoute('frontend.account.profile.page', ['_fragment' => 'tinect-passkeys']);
         }
 
-        $this->passkeyRepository->setPasswordLoginDisabled($customerId, $disable);
-        $this->logger->notice($disable ? 'Password login disabled by customer' : 'Password login enabled by customer', ['customerId' => $customerId]);
+        if (!$disable) {
+            $this->passwordLoginService->enable($customerId, AbstractPasswordLoginEvent::REASON_CUSTOMER, $context->getContext());
+        }
 
         $this->addFlash(self::SUCCESS, $this->trans($disable ? 'tinect-passkeys.passwordLogin.disabledSuccess' : 'tinect-passkeys.passwordLogin.enabledSuccess'));
 

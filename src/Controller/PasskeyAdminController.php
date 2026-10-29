@@ -12,13 +12,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Tinect\Passkeys\Event\AbstractPasswordLoginEvent;
 use Tinect\Passkeys\Service\PasskeyRepository;
+use Tinect\Passkeys\Service\PasswordLoginService;
 
 #[Route(defaults: [PlatformRequest::ATTRIBUTE_ROUTE_SCOPE => ['api']])]
 class PasskeyAdminController extends AbstractController
 {
     public function __construct(
         private readonly PasskeyRepository $passkeyRepository,
+        private readonly PasswordLoginService $passwordLoginService,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -59,7 +62,7 @@ class PasskeyAdminController extends AbstractController
     )]
     public function delete(string $customerId, string $passkeyId, Context $context): Response
     {
-        if ($this->passkeyRepository->delete($passkeyId, $customerId) > 0) {
+        if ($this->passwordLoginService->removePasskey($passkeyId, $customerId, $context, true)['deleted']) {
             $source = $context->getSource();
 
             $this->logger->notice('Passkey removed by administration user', [
@@ -84,13 +87,13 @@ class PasskeyAdminController extends AbstractController
     )]
     public function enablePasswordLogin(string $customerId, Context $context): Response
     {
-        $this->passkeyRepository->setPasswordLoginDisabled($customerId, false);
-
-        $source = $context->getSource();
-        $this->logger->notice('Password login enabled by administration user', [
-            'customerId' => $customerId,
-            'userId' => $source instanceof AdminApiSource ? $source->getUserId() : null,
-        ]);
+        if ($this->passwordLoginService->enable($customerId, AbstractPasswordLoginEvent::REASON_ADMINISTRATION, $context, true)) {
+            $source = $context->getSource();
+            $this->logger->notice('Password login enabled by administration user', [
+                'customerId' => $customerId,
+                'userId' => $source instanceof AdminApiSource ? $source->getUserId() : null,
+            ]);
+        }
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

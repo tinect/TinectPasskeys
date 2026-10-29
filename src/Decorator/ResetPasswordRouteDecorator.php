@@ -11,7 +11,8 @@ use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\SalesChannel\SuccessResponse;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
-use Tinect\Passkeys\Service\PasskeyRepository;
+use Tinect\Passkeys\Event\AbstractPasswordLoginEvent;
+use Tinect\Passkeys\Service\PasswordLoginService;
 
 /**
  * A successful password recovery proves access to the e-mail address, so the password login is enabled again.
@@ -24,7 +25,7 @@ class ResetPasswordRouteDecorator extends AbstractResetPasswordRoute
         #[AutowireDecorated]
         private readonly AbstractResetPasswordRoute $decorated,
         private readonly Connection $connection,
-        private readonly PasskeyRepository $passkeyRepository,
+        private readonly PasswordLoginService $passwordLoginService,
     ) {
     }
 
@@ -44,7 +45,7 @@ class ResetPasswordRouteDecorator extends AbstractResetPasswordRoute
         $response = $this->decorated->resetPassword($data, $context);
 
         if (\is_string($customerId) && Uuid::isValid($customerId)) {
-            $this->passkeyRepository->setPasswordLoginDisabled($customerId, false);
+            $this->passwordLoginService->enable($customerId, AbstractPasswordLoginEvent::REASON_RECOVERY, $context->getContext());
         }
 
         return $response;

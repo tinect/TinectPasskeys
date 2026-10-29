@@ -37,7 +37,24 @@
             "text": "une nouvelle clé d’accès vient d’être ajoutée à votre compte client :",
             "ifYou": "Si c’était vous, vous n’avez rien d’autre à faire.",
             "ifNotYou": "Si ce n’était pas vous, veuillez supprimer immédiatement la clé d’accès dans votre compte et changer votre mot de passe :",
-            "manage": "Gérer les clés d’accès"
+            "manage": "Gérer les clés d’accès",
+            "passwordLoginDisabled": {
+                "subject": "Connexion par mot de passe désactivée pour votre compte",
+                "preHeader": "La connexion par mot de passe a été désactivée pour votre compte client.",
+                "text": "la connexion par mot de passe vient d’être désactivée pour votre compte client. Désormais, vous vous connectez uniquement avec votre clé d’accès.",
+                "ifNotYou": "Si ce n’était pas vous, utilisez immédiatement la fonction « Mot de passe oublié » sur la page de connexion. La connexion par mot de passe sera ainsi réactivée. Vérifiez ensuite vos clés d’accès :"
+            },
+            "passwordLoginEnabled": {
+                "subject": "Connexion par mot de passe réactivée pour votre compte",
+                "preHeader": "La connexion par mot de passe a été réactivée pour votre compte client.",
+                "ifNotYou": "Si ce n’était pas vous, veuillez changer immédiatement votre mot de passe et vérifier vos clés d’accès :",
+                "reason": {
+                    "customer": "la connexion par mot de passe de votre compte client vient d’être réactivée dans les paramètres de votre compte.",
+                    "recovery": "la connexion par mot de passe de votre compte client vient d’être réactivée, car votre mot de passe a été réinitialisé via « Mot de passe oublié ».",
+                    "lastPasskeyRemoved": "la connexion par mot de passe de votre compte client vient d’être réactivée, car la dernière clé d’accès a été supprimée.",
+                    "administration": "la connexion par mot de passe de votre compte client vient d’être réactivée par notre service client."
+                }
+            }
         },
         "passwordLogin": {
             "description": "Vous vous connectez uniquement avec des clés d’accès ? Vous pouvez alors désactiver la connexion par mot de passe pour votre compte. Un mot de passe volé ne suffit alors plus pour accéder à votre compte.",
@@ -47,7 +64,11 @@
             "disabledSuccess": "La connexion par mot de passe a été désactivée.",
             "enabledSuccess": "La connexion par mot de passe a été réactivée.",
             "errorNoPasskey": "Veuillez d’abord ajouter une clé d’accès.",
-            "reEnabledLastPasskey": "Comme vous n’avez plus de clé d’accès, la connexion par mot de passe a été réactivée."
+            "reEnabledLastPasskey": "Comme vous n’avez plus de clé d’accès, la connexion par mot de passe a été réactivée.",
+            "disableConfirmText": "Voulez-vous vraiment désactiver la connexion par mot de passe ? Vous vous connecterez ensuite uniquement avec votre clé d’accès. Vous pouvez la réactiver à tout moment via « Mot de passe oublié ».",
+            "disableConfirm": "Oui, désactiver",
+            "enableConfirmText": "Voulez-vous vraiment réactiver la connexion par mot de passe ? Votre compte sera alors de nouveau accessible avec votre mot de passe.",
+            "enableConfirm": "Oui, réactiver"
         }
     }
 }

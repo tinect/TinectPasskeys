@@ -37,7 +37,24 @@
             "text": "zojuist is er een nieuwe passkey aan uw klantaccount toegevoegd:",
             "ifYou": "Was u dit zelf, dan hoeft u niets te doen.",
             "ifNotYou": "Was u dit niet, verwijder de passkey dan direct in uw account en wijzig uw wachtwoord:",
-            "manage": "Passkeys beheren"
+            "manage": "Passkeys beheren",
+            "passwordLoginDisabled": {
+                "subject": "Inloggen met wachtwoord uitgeschakeld voor uw account",
+                "preHeader": "Inloggen met wachtwoord is voor uw klantaccount uitgeschakeld.",
+                "text": "zojuist is inloggen met wachtwoord voor uw klantaccount uitgeschakeld. U logt vanaf nu alleen nog in met uw passkey.",
+                "ifNotYou": "Was u dit niet, gebruik dan direct „Wachtwoord vergeten” op de inlogpagina. Daarmee wordt inloggen met wachtwoord weer ingeschakeld. Controleer daarna uw passkeys:"
+            },
+            "passwordLoginEnabled": {
+                "subject": "Inloggen met wachtwoord weer ingeschakeld voor uw account",
+                "preHeader": "Inloggen met wachtwoord is voor uw klantaccount weer ingeschakeld.",
+                "ifNotYou": "Was u dit niet, wijzig dan direct uw wachtwoord en controleer uw passkeys:",
+                "reason": {
+                    "customer": "zojuist is inloggen met wachtwoord voor uw klantaccount weer ingeschakeld in uw accountinstellingen.",
+                    "recovery": "zojuist is inloggen met wachtwoord voor uw klantaccount weer ingeschakeld, omdat uw wachtwoord via „Wachtwoord vergeten” opnieuw is ingesteld.",
+                    "lastPasskeyRemoved": "zojuist is inloggen met wachtwoord voor uw klantaccount weer ingeschakeld, omdat de laatste passkey is verwijderd.",
+                    "administration": "zojuist is inloggen met wachtwoord voor uw klantaccount weer ingeschakeld door onze klantenservice."
+                }
+            }
         },
         "passwordLogin": {
             "description": "Logt u alleen nog in met passkeys? Dan kunt u inloggen met wachtwoord voor uw account uitschakelen. Een gestolen wachtwoord is dan niet meer genoeg om toegang tot uw account te krijgen.",
@@ -47,7 +64,11 @@
             "disabledSuccess": "Inloggen met wachtwoord is uitgeschakeld.",
             "enabledSuccess": "Inloggen met wachtwoord is weer ingeschakeld.",
             "errorNoPasskey": "Voeg eerst een passkey toe.",
-            "reEnabledLastPasskey": "Omdat u geen passkey meer heeft, is inloggen met wachtwoord weer ingeschakeld."
+            "reEnabledLastPasskey": "Omdat u geen passkey meer heeft, is inloggen met wachtwoord weer ingeschakeld.",
+            "disableConfirmText": "Wilt u inloggen met wachtwoord echt uitschakelen? U logt daarna alleen nog in met uw passkey. Via „Wachtwoord vergeten” kunt u het op elk moment weer inschakelen.",
+            "disableConfirm": "Ja, uitschakelen",
+            "enableConfirmText": "Wilt u inloggen met wachtwoord echt weer inschakelen? Uw account is dan ook weer met uw wachtwoord toegankelijk.",
+            "enableConfirm": "Ja, weer inschakelen"
         }
     }
 }

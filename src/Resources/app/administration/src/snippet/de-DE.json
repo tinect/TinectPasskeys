@@ -14,7 +14,8 @@
             "passwordLoginDisabled": "Der Kunde hat die Anmeldung per Passwort deaktiviert und meldet sich nur noch mit Passkey an.",
             "actionEnablePasswordLogin": "Passwort-Login wieder aktivieren",
             "notificationPasswordLoginEnabled": "Die Anmeldung per Passwort ist wieder aktiviert.",
-            "notificationPasswordLoginError": "Die Anmeldung per Passwort konnte nicht aktiviert werden."
+            "notificationPasswordLoginError": "Die Anmeldung per Passwort konnte nicht aktiviert werden.",
+            "enablePasswordLoginConfirm": "Die Anmeldung per Passwort für diesen Kunden wieder aktivieren? Der Kunde wird per Mail darüber informiert."
         }
     }
 }

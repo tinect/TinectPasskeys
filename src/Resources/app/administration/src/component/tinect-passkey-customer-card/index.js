@@ -20,6 +20,7 @@ export default {
             passwordLoginDisabled: false,
             isLoading: false,
             passkeyToDelete: null,
+            showEnablePasswordLoginModal: false,
         };
     },
 
@@ -75,6 +76,7 @@ export default {
         },
 
         async enablePasswordLogin() {
+            this.showEnablePasswordLoginModal = false;
             this.isLoading = true;
 
             try {

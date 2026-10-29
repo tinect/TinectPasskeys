@@ -37,7 +37,24 @@
             "text": "zu Ihrem Kundenkonto wurde soeben ein neuer Passkey hinzugefügt:",
             "ifYou": "Wenn Sie das waren, ist nichts weiter zu tun.",
             "ifNotYou": "Wenn nicht, entfernen Sie den Passkey bitte umgehend in Ihrem Kundenkonto und ändern Sie Ihr Passwort:",
-            "manage": "Passkeys verwalten"
+            "manage": "Passkeys verwalten",
+            "passwordLoginDisabled": {
+                "subject": "Anmeldung per Passwort für Ihr Kundenkonto deaktiviert",
+                "preHeader": "Für Ihr Kundenkonto wurde die Anmeldung per Passwort deaktiviert.",
+                "text": "für Ihr Kundenkonto wurde soeben die Anmeldung per Passwort deaktiviert. Sie melden sich ab sofort nur noch mit Ihrem Passkey an.",
+                "ifNotYou": "Wenn Sie das nicht waren, nutzen Sie bitte umgehend „Passwort vergessen“ auf der Anmeldeseite. Damit wird die Anmeldung per Passwort wieder aktiviert. Prüfen Sie anschließend Ihre Passkeys:"
+            },
+            "passwordLoginEnabled": {
+                "subject": "Anmeldung per Passwort für Ihr Kundenkonto wieder aktiviert",
+                "preHeader": "Für Ihr Kundenkonto wurde die Anmeldung per Passwort wieder aktiviert.",
+                "ifNotYou": "Wenn Sie das nicht waren, ändern Sie bitte umgehend Ihr Passwort und prüfen Sie Ihre Passkeys:",
+                "reason": {
+                    "customer": "für Ihr Kundenkonto wurde soeben die Anmeldung per Passwort in Ihren Kontoeinstellungen wieder aktiviert.",
+                    "recovery": "für Ihr Kundenkonto wurde soeben die Anmeldung per Passwort wieder aktiviert, weil Ihr Passwort über „Passwort vergessen“ neu gesetzt wurde.",
+                    "lastPasskeyRemoved": "für Ihr Kundenkonto wurde soeben die Anmeldung per Passwort wieder aktiviert, weil der letzte Passkey entfernt wurde.",
+                    "administration": "für Ihr Kundenkonto wurde soeben die Anmeldung per Passwort durch unseren Kundenservice wieder aktiviert."
+                }
+            }
         },
         "passwordLogin": {
             "description": "Melden Sie sich nur noch mit Passkey an? Dann können Sie die Anmeldung per Passwort für Ihr Konto deaktivieren. Ein gestohlenes Passwort reicht dann nicht mehr für den Zugriff auf Ihr Konto.",
@@ -47,7 +64,11 @@
             "disabledSuccess": "Die Anmeldung per Passwort wurde deaktiviert.",
             "enabledSuccess": "Die Anmeldung per Passwort wurde wieder aktiviert.",
             "errorNoPasskey": "Fügen Sie zuerst einen Passkey hinzu.",
-            "reEnabledLastPasskey": "Da Sie keinen Passkey mehr haben, wurde die Anmeldung per Passwort wieder aktiviert."
+            "reEnabledLastPasskey": "Da Sie keinen Passkey mehr haben, wurde die Anmeldung per Passwort wieder aktiviert.",
+            "disableConfirmText": "Möchten Sie die Anmeldung per Passwort wirklich deaktivieren? Sie melden sich danach nur noch mit Ihrem Passkey an. Über „Passwort vergessen“ können Sie sie jederzeit wieder aktivieren.",
+            "disableConfirm": "Ja, deaktivieren",
+            "enableConfirmText": "Möchten Sie die Anmeldung per Passwort wirklich wieder aktivieren? Ihr Konto ist dann auch wieder mit Ihrem Passwort zugänglich.",
+            "enableConfirm": "Ja, wieder aktivieren"
         }
     }
 }
