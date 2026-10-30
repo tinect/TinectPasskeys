@@ -1,0 +1,23 @@
+{
+  "base": "/bundles/tinectpasskeys/administration/",
+  "entryPoints": {
+    "tinect-passkeys": {
+      "css": [],
+      "dynamic": [],
+      "js": [
+        "/bundles/tinectpasskeys/administration/js/tinect-passkeys-VX4SZJUE.js"
+      ],
+      "legacy": false,
+      "preload": []
+    }
+  },
+  "legacy": false,
+  "metadatas": {},
+  "version": [
+    "7.0.4",
+    7,
+    0,
+    4
+  ],
+  "viteServer": null
+}
