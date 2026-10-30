@@ -22,7 +22,9 @@
             "errorThrottled": "Zu viele Versuche. Bitte warten Sie einen Moment.",
             "error": "Der Passkey konnte nicht hinzugefügt werden.",
             "unsupported": "Ihr Browser unterstützt keine Passkeys.",
-            "success": "Der Passkey wurde hinzugefügt."
+            "success": "Der Passkey wurde hinzugefügt.",
+            "errorLimit": "Sie haben die maximale Anzahl an Passkeys erreicht. Entfernen Sie zuerst einen Passkey.",
+            "confirmWithPasskey": "Da die Anmeldung per Passwort deaktiviert ist, bestätigen Sie das Hinzufügen zuerst mit einem Ihrer vorhandenen Passkeys."
         },
         "delete": {
             "success": "Der Passkey wurde entfernt.",
@@ -35,6 +37,10 @@
             "subject": "Neuer Passkey zu Ihrem Kundenkonto hinzugefügt",
             "preHeader": "Zu Ihrem Kundenkonto wurde ein neuer Passkey hinzugefügt.",
             "text": "zu Ihrem Kundenkonto wurde soeben ein neuer Passkey hinzugefügt:",
+            "createdAt": "Zeitpunkt:",
+            "device": "Gerät:",
+            "ipAddress": "IP-Adresse (gekürzt):",
+            "passkeyName": "Beim Hinzufügen gewählte Bezeichnung:",
             "ifYou": "Wenn Sie das waren, ist nichts weiter zu tun.",
             "ifNotYou": "Wenn nicht, entfernen Sie den Passkey bitte umgehend in Ihrem Kundenkonto und ändern Sie Ihr Passwort:",
             "manage": "Passkeys verwalten",
@@ -72,5 +78,8 @@
             "confirmWithPasskey": "Zur Sicherheit bestätigen Sie die Änderung anschließend mit Ihrem Passkey.",
             "errorConfirmation": "Die Bestätigung mit Ihrem Passkey ist fehlgeschlagen. Bitte versuchen Sie es erneut."
         }
+    },
+    "error": {
+        "TINECT_PASSKEYS_PASSWORD_LOGIN_DISABLED": "Solange die Anmeldung per Passwort deaktiviert ist, kann die E-Mail-Adresse nicht geändert werden. Aktivieren Sie die Anmeldung per Passwort zuerst im Bereich „Passkeys“ wieder."
     }
 }

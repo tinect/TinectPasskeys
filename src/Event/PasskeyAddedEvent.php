@@ -28,11 +28,23 @@ class PasskeyAddedEvent extends Event implements SalesChannelAware, ShopwareSale
 
     final public const PROFILE_URL = 'profileUrl';
 
+    final public const CREATED_AT = 'createdAt';
+
+    /**
+     * Shortened client IP, see PasskeyController::register()
+     */
+    final public const IP_ADDRESS = 'ipAddress';
+
+    final public const DEVICE = 'device';
+
     public function __construct(
         private readonly SalesChannelContext $salesChannelContext,
         private readonly CustomerEntity $customer,
         private readonly string $passkeyName,
         private readonly string $profileUrl,
+        private readonly string $createdAt,
+        private readonly string $ipAddress,
+        private readonly string $device,
     ) {
     }
 
@@ -44,6 +56,9 @@ class PasskeyAddedEvent extends Event implements SalesChannelAware, ShopwareSale
         return [
             self::PASSKEY_NAME => $this->passkeyName,
             self::PROFILE_URL => $this->profileUrl,
+            self::CREATED_AT => $this->createdAt,
+            self::IP_ADDRESS => $this->ipAddress,
+            self::DEVICE => $this->device,
         ];
     }
 
@@ -87,12 +102,30 @@ class PasskeyAddedEvent extends Event implements SalesChannelAware, ShopwareSale
         return $this->profileUrl;
     }
 
+    public function getCreatedAt(): string
+    {
+        return $this->createdAt;
+    }
+
+    public function getIpAddress(): string
+    {
+        return $this->ipAddress;
+    }
+
+    public function getDevice(): string
+    {
+        return $this->device;
+    }
+
     public static function getAvailableData(): EventDataCollection
     {
         return (new EventDataCollection())
             ->add(CustomerAware::CUSTOMER, new EntityType(CustomerDefinition::class))
             ->add(self::PASSKEY_NAME, new ScalarValueType(ScalarValueType::TYPE_STRING))
-            ->add(self::PROFILE_URL, new ScalarValueType(ScalarValueType::TYPE_STRING));
+            ->add(self::PROFILE_URL, new ScalarValueType(ScalarValueType::TYPE_STRING))
+            ->add(self::CREATED_AT, new ScalarValueType(ScalarValueType::TYPE_STRING))
+            ->add(self::IP_ADDRESS, new ScalarValueType(ScalarValueType::TYPE_STRING))
+            ->add(self::DEVICE, new ScalarValueType(ScalarValueType::TYPE_STRING));
     }
 
     public function getMailStruct(): MailRecipientStruct
@@ -102,6 +135,9 @@ class PasskeyAddedEvent extends Event implements SalesChannelAware, ShopwareSale
         ]);
     }
 
+    /**
+     * Without the IP address and device, so they are only sent to the customer and not kept in the event log
+     */
     public function getLogData(): array
     {
         return [

@@ -22,7 +22,9 @@
             "errorThrottled": "Too many attempts. Please wait a moment.",
             "error": "The passkey could not be added.",
             "unsupported": "Your browser does not support passkeys.",
-            "success": "The passkey has been added."
+            "success": "The passkey has been added.",
+            "errorLimit": "You have reached the maximum number of passkeys. Please remove a passkey first.",
+            "confirmWithPasskey": "As the password login is disabled, you first confirm adding a passkey with one of your existing passkeys."
         },
         "delete": {
             "success": "The passkey has been removed.",
@@ -35,6 +37,10 @@
             "subject": "A new passkey was added to your account",
             "preHeader": "A new passkey was added to your customer account.",
             "text": "a new passkey was just added to your customer account:",
+            "createdAt": "Time:",
+            "device": "Device:",
+            "ipAddress": "IP address (shortened):",
+            "passkeyName": "Name chosen when adding:",
             "ifYou": "If this was you, there is nothing else to do.",
             "ifNotYou": "If this was not you, please remove the passkey in your account right away and change your password:",
             "manage": "Manage passkeys",
@@ -72,5 +78,8 @@
             "confirmWithPasskey": "For your security, you confirm the change with your passkey afterwards.",
             "errorConfirmation": "The confirmation with your passkey failed. Please try again."
         }
+    },
+    "error": {
+        "TINECT_PASSKEYS_PASSWORD_LOGIN_DISABLED": "The e-mail address can not be changed while the password login is disabled. Please enable the password login in the \"Passkeys\" section first."
     }
 }

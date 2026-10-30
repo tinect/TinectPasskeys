@@ -22,7 +22,9 @@
             "errorThrottled": "Te veel pogingen. Wacht even.",
             "error": "De passkey kon niet worden toegevoegd.",
             "unsupported": "Uw browser ondersteunt geen passkeys.",
-            "success": "De passkey is toegevoegd."
+            "success": "De passkey is toegevoegd.",
+            "errorLimit": "U heeft het maximale aantal passkeys bereikt. Verwijder eerst een passkey.",
+            "confirmWithPasskey": "Omdat inloggen met wachtwoord is uitgeschakeld, bevestigt u het toevoegen eerst met een van uw bestaande passkeys."
         },
         "delete": {
             "success": "De passkey is verwijderd.",
@@ -35,6 +37,10 @@
             "subject": "Er is een nieuwe passkey aan uw account toegevoegd",
             "preHeader": "Er is een nieuwe passkey aan uw klantaccount toegevoegd.",
             "text": "zojuist is er een nieuwe passkey aan uw klantaccount toegevoegd:",
+            "createdAt": "Tijdstip:",
+            "device": "Apparaat:",
+            "ipAddress": "IP-adres (ingekort):",
+            "passkeyName": "Bij het toevoegen gekozen naam:",
             "ifYou": "Was u dit zelf, dan hoeft u niets te doen.",
             "ifNotYou": "Was u dit niet, verwijder de passkey dan direct in uw account en wijzig uw wachtwoord:",
             "manage": "Passkeys beheren",
@@ -72,5 +78,8 @@
             "confirmWithPasskey": "Voor uw veiligheid bevestigt u de wijziging daarna met uw passkey.",
             "errorConfirmation": "De bevestiging met uw passkey is mislukt. Probeer het opnieuw."
         }
+    },
+    "error": {
+        "TINECT_PASSKEYS_PASSWORD_LOGIN_DISABLED": "Het e-mailadres kan niet worden gewijzigd zolang inloggen met wachtwoord is uitgeschakeld. Schakel inloggen met wachtwoord eerst weer in bij \"Passkeys\"."
     }
 }

@@ -19,7 +19,10 @@ class Migration1793318500CreatePasskeyAddedMailFlow extends MigrationStep
 
     final public const FLOW_ID = '019a3a0c5e2e7c4d9f1b2a3c4d5e6f72';
 
-    private const TRANSLATIONS = [
+    /**
+     * Kept unchanged, Migration1793318800UpdatePasskeyAddedMailTemplate only replaces templates still matching these texts
+     */
+    final public const TRANSLATIONS = [
         'en' => [
             'typeName' => 'Passkey added',
             'subject' => 'A new passkey was added to your account',
