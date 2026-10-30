@@ -77,7 +77,8 @@
             </template>
         </sw-modal>
     </template>
-    <p v-else-if="!isLoading">
+    <!-- no v-else: the grid above is a slot, so it is no sibling for the compiler -->
+    <p v-if="passkeys.length === 0 && !isLoading">
         {{ $t('tinect-passkeys.customerCard.empty') }}
     </p>
     <sw-modal
