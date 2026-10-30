@@ -32,7 +32,7 @@
     "require": {
         "shopware/core": "~6.7.0",
         "shopware/storefront": "~6.7.0",
-        "web-auth/webauthn-lib": "^5.3"
+        "web-auth/webauthn-lib": "^5.3.1"
     },
     "authors": [
         {

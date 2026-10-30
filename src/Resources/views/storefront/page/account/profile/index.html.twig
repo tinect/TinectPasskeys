@@ -6,6 +6,11 @@
     {% block page_account_profile_passkeys %}
         {% set tinectPasskeys = page.extensions.tinectPasskeys.passkeys ?? [] %}
         {% set tinectPasswordLoginDisabled = page.extensions.tinectPasskeys.passwordLoginDisabled ?? false %}
+        {% set tinectPasskeyConfirmOptions = {
+            optionsUrl: path('frontend.tinect-passkeys.confirm.options'),
+            errorMessage: 'tinect-passkeys.passwordLogin.errorConfirmation'|trans|striptags,
+            unsupportedMessage: 'tinect-passkeys.register.unsupported'|trans|striptags,
+        } %}
 
         <div class="card account-profile-passkeys mb-4" id="tinect-passkeys">
             <div class="card-body">
@@ -69,6 +74,11 @@
 
                                             <div class="modal-body">
                                                 {{ 'tinect-passkeys.delete.confirmText'|trans({ '%name%': passkey.name|e })|raw }}
+
+                                                {% if tinectPasswordLoginDisabled %}
+                                                    <p class="mt-2 mb-0 small text-muted">{{ 'tinect-passkeys.passwordLogin.confirmWithPasskey'|trans|sw_sanitize }}</p>
+                                                    <div class="tinect-passkey-confirm-error alert alert-danger mt-3 mb-0 d-none" role="alert"></div>
+                                                {% endif %}
                                             </div>
 
                                             <div class="modal-footer">
@@ -78,8 +88,13 @@
                                                     {{ 'tinect-passkeys.delete.cancel'|trans|sw_sanitize }}
                                                 </button>
 
+                                                {# with a disabled password login, removing a passkey has to be confirmed with a passkey #}
                                                 <form action="{{ path('frontend.tinect-passkeys.delete', { passkeyId: passkey.id }) }}"
-                                                      method="post">
+                                                      method="post"
+                                                      {% if tinectPasswordLoginDisabled %}
+                                                      data-tinect-passkey-confirm="true"
+                                                      data-tinect-passkey-confirm-options="{{ tinectPasskeyConfirmOptions|json_encode }}"
+                                                      {% endif %}>
                                                     <button type="submit" class="btn btn-danger">
                                                         {{ 'tinect-passkeys.delete.confirm'|trans|sw_sanitize }}
                                                     </button>
@@ -146,12 +161,6 @@
                                                 {{ 'tinect-passkeys.delete.cancel'|trans|sw_sanitize }}
                                             </button>
 
-                                            {% set tinectPasskeyConfirmOptions = {
-                                                optionsUrl: path('frontend.tinect-passkeys.confirm.options'),
-                                                errorMessage: 'tinect-passkeys.passwordLogin.errorConfirmation'|trans|striptags,
-                                                unsupportedMessage: 'tinect-passkeys.register.unsupported'|trans|striptags,
-                                            } %}
-
                                             <form action="{{ path('frontend.tinect-passkeys.password-login') }}"
                                                   method="post"
                                                   data-tinect-passkey-confirm="true"
@@ -170,9 +179,11 @@
                 {% endblock %}
 
                 {% block page_account_profile_passkeys_register %}
+                    {# with a disabled password login, adding a passkey is confirmed with an existing passkey instead of the password #}
                     {% set tinectPasskeyRegisterOptions = {
                         optionsUrl: path('frontend.tinect-passkeys.register.options'),
                         registerUrl: path('frontend.tinect-passkeys.register'),
+                        confirmOptionsUrl: tinectPasswordLoginDisabled ? path('frontend.tinect-passkeys.confirm.options') : '',
                         errorMessage: 'tinect-passkeys.register.error'|trans|striptags,
                     } %}
 
@@ -192,18 +203,24 @@
                                        placeholder="{{ 'tinect-passkeys.register.namePlaceholder'|trans|striptags }}">
                             </div>
 
-                            <div class="form-group col-md-6">
-                                <label class="form-label" for="tinectPasskeyPassword">
-                                    {{ 'tinect-passkeys.register.passwordLabel'|trans|sw_sanitize }}{{ 'general.required'|trans|sw_sanitize }}
-                                </label>
-                                <input type="password"
-                                       class="form-control"
-                                       id="tinectPasskeyPassword"
-                                       name="password"
-                                       autocomplete="current-password"
-                                       required>
-                            </div>
+                            {% if not tinectPasswordLoginDisabled %}
+                                <div class="form-group col-md-6">
+                                    <label class="form-label" for="tinectPasskeyPassword">
+                                        {{ 'tinect-passkeys.register.passwordLabel'|trans|sw_sanitize }}{{ 'general.required'|trans|sw_sanitize }}
+                                    </label>
+                                    <input type="password"
+                                           class="form-control"
+                                           id="tinectPasskeyPassword"
+                                           name="password"
+                                           autocomplete="current-password"
+                                           required>
+                                </div>
+                            {% endif %}
                         </div>
+
+                        {% if tinectPasswordLoginDisabled %}
+                            <p class="mt-2 mb-0 small text-muted">{{ 'tinect-passkeys.register.confirmWithPasskey'|trans|sw_sanitize }}</p>
+                        {% endif %}
 
                         <div class="tinect-passkey-register-error alert alert-danger mt-2 d-none" role="alert"></div>
                         <div class="tinect-passkey-register-unsupported alert alert-warning mt-2 d-none" role="alert">

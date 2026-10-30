@@ -3,6 +3,7 @@ import {
     isAbortError,
     isPasskeySupported,
     parseCreationOptions,
+    parseRequestOptions,
     postForm,
     serializeCredential,
 } from '../helper/webauthn.helper';
@@ -16,6 +17,9 @@ export default class TinectPasskeyRegisterPlugin
 
         /** Url to verify and store the new passkey */
         registerUrl: '',
+
+        /** Url to fetch the assertion options, set when the password login is disabled */
+        confirmOptionsUrl: '',
 
         /** Fallback message if the server does not return one */
         errorMessage: '',
@@ -56,10 +60,10 @@ export default class TinectPasskeyRegisterPlugin
         const nameInput = this.el.querySelector('[name="name"]');
 
         try {
-            const options = await postForm(this.options.optionsUrl, {
-                password: passwordInput.value,
-            });
-            passwordInput.value = '';
+            const options = await postForm(
+                this.options.optionsUrl,
+                await this._getConfirmation(passwordInput)
+            );
 
             const credential = await navigator.credentials.create({
                 publicKey: parseCreationOptions(options),
@@ -81,5 +85,24 @@ export default class TinectPasskeyRegisterPlugin
                 this._error.classList.remove(this.options.invisibleClass);
             }
         }
+    }
+
+    /**
+     * Confirms with an existing passkey, if the password login is disabled, otherwise with the current password
+     */
+    async _getConfirmation(passwordInput) {
+        if (!this.options.confirmOptionsUrl) {
+            const password = passwordInput.value;
+            passwordInput.value = '';
+
+            return { password };
+        }
+
+        const options = await postForm(this.options.confirmOptionsUrl, {});
+        const credential = await navigator.credentials.get({
+            publicKey: parseRequestOptions(options),
+        });
+
+        return { credential: serializeCredential(credential) };
     }
 }

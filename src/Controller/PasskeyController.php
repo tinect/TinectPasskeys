@@ -18,6 +18,7 @@ use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
 use Shopware\Storefront\Framework\Routing\StorefrontRouteScope;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +27,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Tinect\Passkeys\Event\AbstractPasswordLoginEvent;
 use Tinect\Passkeys\Event\PasskeyAddedEvent;
+use Tinect\Passkeys\Service\DeviceDescriber;
 use Tinect\Passkeys\Service\PasskeyRepository;
 use Tinect\Passkeys\Service\PasswordLoginService;
 use Tinect\Passkeys\Service\WebauthnService;
@@ -34,6 +36,8 @@ use Tinect\Passkeys\Service\WebauthnService;
 class PasskeyController extends StorefrontController
 {
     private const MAX_NAME_LENGTH = 255;
+
+    private const MAX_PASSKEYS = 20;
 
     /**
      * @param EntityRepository<CustomerCollection> $customerRepository
@@ -48,6 +52,7 @@ class PasskeyController extends StorefrontController
         private readonly RateLimiter $rateLimiter,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly LoggerInterface $logger,
+        private readonly DeviceDescriber $deviceDescriber,
     ) {
     }
 
@@ -145,18 +150,34 @@ class PasskeyController extends StorefrontController
     public function registerOptions(Request $request, SalesChannelContext $context): Response
     {
         $customer = $this->getLoggedInCustomer($context);
-        $rateLimitKey = strtolower($customer->getEmail()) . '-' . $request->getClientIp();
 
-        try {
-            $this->rateLimiter->ensureAccepted(RateLimiter::LOGIN_ROUTE, $rateLimitKey);
-            $this->accountService->getCustomerByLogin($customer->getEmail(), $request->request->getString('password'), $context);
-        } catch (RateLimitExceededException) {
-            return $this->createErrorResponse('tinect-passkeys.register.errorThrottled');
-        } catch (BadCredentialsException|CustomerNotFoundException) {
-            return $this->createErrorResponse('tinect-passkeys.register.errorPassword');
+        if ($this->passkeyRepository->countByCustomerId($customer->getId()) >= self::MAX_PASSKEYS) {
+            return $this->createErrorResponse('tinect-passkeys.register.errorLimit');
         }
 
-        $this->rateLimiter->reset(RateLimiter::LOGIN_ROUTE, $rateLimitKey);
+        // with a disabled password login, the password alone must not be enough to add a passkey
+        if ($this->passkeyRepository->isPasswordLoginDisabled($customer->getId())) {
+            try {
+                $this->confirmWithPasskey($request, $customer->getId(), $request->request->getString('credential'));
+            } catch (\Throwable $exception) {
+                $this->logConfirmationFailure($customer->getId(), $exception);
+
+                return $this->createErrorResponse('tinect-passkeys.passwordLogin.errorConfirmation');
+            }
+        } else {
+            $rateLimitKey = strtolower($customer->getEmail()) . '-' . $request->getClientIp();
+
+            try {
+                $this->rateLimiter->ensureAccepted(RateLimiter::LOGIN_ROUTE, $rateLimitKey);
+                $this->accountService->getCustomerByLogin($customer->getEmail(), $request->request->getString('password'), $context);
+            } catch (RateLimitExceededException) {
+                return $this->createErrorResponse('tinect-passkeys.register.errorThrottled');
+            } catch (BadCredentialsException|CustomerNotFoundException) {
+                return $this->createErrorResponse('tinect-passkeys.register.errorPassword');
+            }
+
+            $this->rateLimiter->reset(RateLimiter::LOGIN_ROUTE, $rateLimitKey);
+        }
 
         $salesChannelName = $context->getSalesChannel()->getTranslation('name');
 
@@ -186,6 +207,10 @@ class PasskeyController extends StorefrontController
         }
 
         try {
+            if ($this->passkeyRepository->countByCustomerId($customer->getId()) >= self::MAX_PASSKEYS) {
+                throw new \RuntimeException('Passkey limit reached');
+            }
+
             $credentialRecord = $this->webauthnService->verifyCreation($request, $request->request->getString('credential'), $customer->getId());
 
             $this->passkeyRepository->insert(
@@ -209,7 +234,10 @@ class PasskeyController extends StorefrontController
             $context,
             $customer,
             $name,
-            $this->generateUrl('frontend.account.profile.page', ['_fragment' => 'tinect-passkeys'], UrlGeneratorInterface::ABSOLUTE_URL)
+            $this->generateUrl('frontend.account.profile.page', ['_fragment' => 'tinect-passkeys'], UrlGeneratorInterface::ABSOLUTE_URL),
+            (new \DateTimeImmutable())->format(\DateTimeInterface::ATOM),
+            $this->getShortenedClientIp($request),
+            $this->deviceDescriber->describe($request->headers->get('User-Agent'))
         ));
 
         $this->addFlash(self::SUCCESS, $this->trans('tinect-passkeys.register.success'));
@@ -217,6 +245,10 @@ class PasskeyController extends StorefrontController
         return new JsonResponse(['success' => true]);
     }
 
+    /**
+     * With a disabled password login, removing a passkey has to be confirmed with one of the customer's passkeys.
+     * Otherwise a hijacked session could remove all passkeys, which enables the password login again.
+     */
     #[Route(
         path: '/account/passkey/{passkeyId}/delete',
         name: 'frontend.tinect-passkeys.delete',
@@ -224,9 +256,20 @@ class PasskeyController extends StorefrontController
         defaults: [PlatformRequest::ATTRIBUTE_LOGIN_REQUIRED => true],
         methods: [Request::METHOD_POST]
     )]
-    public function delete(string $passkeyId, SalesChannelContext $context): Response
+    public function delete(string $passkeyId, Request $request, SalesChannelContext $context): Response
     {
         $customerId = $this->getLoggedInCustomer($context)->getId();
+
+        if ($this->passkeyRepository->isPasswordLoginDisabled($customerId)) {
+            try {
+                $this->confirmWithPasskey($request, $customerId, $request->request->getString('credential'));
+            } catch (\Throwable $exception) {
+                $this->logConfirmationFailure($customerId, $exception);
+
+                return $this->createErrorResponse('tinect-passkeys.passwordLogin.errorConfirmation');
+            }
+        }
+
         $result = $this->passwordLoginService->removePasskey($passkeyId, $customerId, $context->getContext());
 
         if ($result['deleted']) {
@@ -236,6 +279,11 @@ class PasskeyController extends StorefrontController
 
         if ($result['passwordLoginEnabled']) {
             $this->addFlash(self::INFO, $this->trans('tinect-passkeys.passwordLogin.reEnabledLastPasskey'));
+        }
+
+        // the confirmation with a passkey is sent via JavaScript, which reloads the page itself
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(['success' => true]);
         }
 
         return $this->redirectToRoute('frontend.account.profile.page', ['_fragment' => 'tinect-passkeys']);
@@ -278,11 +326,7 @@ class PasskeyController extends StorefrontController
         try {
             $this->confirmWithPasskey($request, $customerId, $request->request->getString('credential'));
         } catch (\Throwable $exception) {
-            $this->logger->warning('Passkey confirmation failed', [
-                'customerId' => $customerId,
-                'reason' => $exception->getMessage(),
-                'exceptionClass' => $exception::class,
-            ]);
+            $this->logConfirmationFailure($customerId, $exception);
 
             return $this->createErrorResponse('tinect-passkeys.passwordLogin.errorConfirmation');
         }
@@ -322,6 +366,26 @@ class PasskeyController extends StorefrontController
         );
 
         $this->passkeyRepository->updateAfterLogin($passkey['id'], $this->webauthnService->serialize($credentialRecord));
+    }
+
+    /**
+     * Enough for the customer to tell whether it was their connection, but not the full IP (data minimisation):
+     * IPv4 without the last octet, IPv6 reduced to the /48 prefix
+     */
+    private function getShortenedClientIp(Request $request): string
+    {
+        $clientIp = $request->getClientIp();
+
+        return $clientIp === null ? '' : IpUtils::anonymize($clientIp, 1, 10);
+    }
+
+    private function logConfirmationFailure(string $customerId, \Throwable $exception): void
+    {
+        $this->logger->warning('Passkey confirmation failed', [
+            'customerId' => $customerId,
+            'reason' => $exception->getMessage(),
+            'exceptionClass' => $exception::class,
+        ]);
     }
 
     private function getLoggedInCustomer(SalesChannelContext $context): CustomerEntity

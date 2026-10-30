@@ -22,7 +22,9 @@
             "errorThrottled": "Trop de tentatives. Veuillez patienter un instant.",
             "error": "La clé d’accès n’a pas pu être ajoutée.",
             "unsupported": "Votre navigateur ne prend pas en charge les clés d’accès.",
-            "success": "La clé d’accès a été ajoutée."
+            "success": "La clé d’accès a été ajoutée.",
+            "errorLimit": "Vous avez atteint le nombre maximal de clés d’accès. Veuillez d’abord supprimer une clé d’accès.",
+            "confirmWithPasskey": "La connexion par mot de passe étant désactivée, vous confirmez d’abord l’ajout avec l’une de vos clés d’accès existantes."
         },
         "delete": {
             "success": "La clé d’accès a été supprimée.",
@@ -35,6 +37,10 @@
             "subject": "Une nouvelle clé d’accès a été ajoutée à votre compte",
             "preHeader": "Une nouvelle clé d’accès a été ajoutée à votre compte client.",
             "text": "une nouvelle clé d’accès vient d’être ajoutée à votre compte client :",
+            "createdAt": "Date et heure :",
+            "device": "Appareil :",
+            "ipAddress": "Adresse IP (abrégée) :",
+            "passkeyName": "Nom choisi lors de l'ajout :",
             "ifYou": "Si c’était vous, vous n’avez rien d’autre à faire.",
             "ifNotYou": "Si ce n’était pas vous, veuillez supprimer immédiatement la clé d’accès dans votre compte et changer votre mot de passe :",
             "manage": "Gérer les clés d’accès",
@@ -72,5 +78,8 @@
             "confirmWithPasskey": "Pour votre sécurité, vous confirmez ensuite la modification avec votre clé d’accès.",
             "errorConfirmation": "La confirmation avec votre clé d’accès a échoué. Veuillez réessayer."
         }
+    },
+    "error": {
+        "TINECT_PASSKEYS_PASSWORD_LOGIN_DISABLED": "L’adresse e-mail ne peut pas être modifiée tant que la connexion par mot de passe est désactivée. Veuillez d’abord réactiver la connexion par mot de passe dans la section « Clés d’accès »."
     }
 }
