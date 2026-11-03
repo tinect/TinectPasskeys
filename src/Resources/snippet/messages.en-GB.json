@@ -10,7 +10,9 @@
             "description": "A passkey lets you log in without a password, using your fingerprint, face or device PIN.",
             "createdAt": "Created on",
             "lastUsedAt": "last used",
-            "delete": "Remove"
+            "delete": "Remove",
+            "hint": "You can manage your passkeys on a separate page in your customer account.",
+            "manage": "Manage passkeys"
         },
         "register": {
             "button": "Add passkey",
@@ -77,6 +79,9 @@
             "enableConfirm": "Yes, enable again",
             "confirmWithPasskey": "For your security, you confirm the change with your passkey afterwards.",
             "errorConfirmation": "The confirmation with your passkey failed. Please try again."
+        },
+        "account": {
+            "link": "Passkeys"
         }
     },
     "error": {

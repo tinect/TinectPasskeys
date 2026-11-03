@@ -7,7 +7,7 @@ The plugin is compatible with Shopware 6.7 and PHP 8.2 and higher.
 ## ✔️ Features
 - Passkey login on the storefront login page
 - Passkey suggestions directly in the e-mail field (conditional UI), if the login field uses `autocomplete="username webauthn"`
-- Manage passkeys in the customer profile: add (requires the current password), list with last usage, remove (with confirmation),
+- Manage passkeys on an own account page (`/account/passkeys`, linked in the account menu and the profile): add (requires the current password), list with last usage, remove (with confirmation),
   up to 20 passkeys per customer
 - Customers with at least one passkey can disable the password login for their account (storefront and Store API);
   disabling and enabling it has to be confirmed with one of their passkeys. While it is disabled, adding and removing

@@ -1,0 +1,14 @@
+{% sw_extends '@Storefront/storefront/page/account/sidebar.html.twig' %}
+
+{% block page_account_sidebar_link_profile %}
+    {{ parent() }}
+
+    {% block page_account_sidebar_link_passkeys %}
+        <a href="{{ path('frontend.tinect-passkeys.page') }}"
+           title="{{ 'tinect-passkeys.account.link'|trans|striptags }}"
+           class="list-group-item list-group-item-action account-aside-item{% if activeRoute is same as('frontend.tinect-passkeys.page') %} is-active{% endif %}"
+           {% if activeRoute is same as('frontend.tinect-passkeys.page') %} aria-current="page"{% endif %}>
+            {{ 'tinect-passkeys.account.link'|trans|sw_sanitize }}
+        </a>
+    {% endblock %}
+{% endblock %}

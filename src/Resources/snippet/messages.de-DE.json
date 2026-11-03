@@ -10,7 +10,9 @@
             "description": "Mit einem Passkey melden Sie sich ohne Passwort an – per Fingerabdruck, Gesichtserkennung oder Geräte-PIN.",
             "createdAt": "Erstellt am",
             "lastUsedAt": "zuletzt verwendet",
-            "delete": "Entfernen"
+            "delete": "Entfernen",
+            "hint": "Ihre Passkeys können Sie auf einer eigenen Seite in Ihrem Kundenkonto verwalten.",
+            "manage": "Passkeys verwalten"
         },
         "register": {
             "button": "Passkey hinzufügen",
@@ -77,6 +79,9 @@
             "enableConfirm": "Ja, wieder aktivieren",
             "confirmWithPasskey": "Zur Sicherheit bestätigen Sie die Änderung anschließend mit Ihrem Passkey.",
             "errorConfirmation": "Die Bestätigung mit Ihrem Passkey ist fehlgeschlagen. Bitte versuchen Sie es erneut."
+        },
+        "account": {
+            "link": "Passkeys"
         }
     },
     "error": {

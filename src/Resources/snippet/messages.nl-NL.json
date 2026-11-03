@@ -10,7 +10,9 @@
             "description": "Met een passkey logt u in zonder wachtwoord – met vingerafdruk, gezichtsherkenning of de pincode van uw apparaat.",
             "createdAt": "Aangemaakt op",
             "lastUsedAt": "laatst gebruikt",
-            "delete": "Verwijderen"
+            "delete": "Verwijderen",
+            "hint": "U kunt uw passkeys op een aparte pagina in uw klantaccount beheren.",
+            "manage": "Passkeys beheren"
         },
         "register": {
             "button": "Passkey toevoegen",
@@ -77,6 +79,9 @@
             "enableConfirm": "Ja, weer inschakelen",
             "confirmWithPasskey": "Voor uw veiligheid bevestigt u de wijziging daarna met uw passkey.",
             "errorConfirmation": "De bevestiging met uw passkey is mislukt. Probeer het opnieuw."
+        },
+        "account": {
+            "link": "Passkeys"
         }
     },
     "error": {

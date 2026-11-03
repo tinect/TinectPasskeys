@@ -27,6 +27,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Tinect\Passkeys\Event\AbstractPasswordLoginEvent;
 use Tinect\Passkeys\Event\PasskeyAddedEvent;
+use Tinect\Passkeys\Page\Account\Passkeys\AccountPasskeysPageLoader;
 use Tinect\Passkeys\Service\DeviceDescriber;
 use Tinect\Passkeys\Service\PasskeyRepository;
 use Tinect\Passkeys\Service\PasswordLoginService;
@@ -53,6 +54,7 @@ class PasskeyController extends StorefrontController
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly LoggerInterface $logger,
         private readonly DeviceDescriber $deviceDescriber,
+        private readonly AccountPasskeysPageLoader $accountPasskeysPageLoader,
     ) {
     }
 
@@ -67,13 +69,22 @@ class PasskeyController extends StorefrontController
     )]
     public function wellKnown(): JsonResponse
     {
-        $profileUrl = $this->generateUrl(
-            'frontend.account.profile.page',
-            ['_fragment' => 'tinect-passkeys'],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
+        $manageUrl = $this->generateUrl('frontend.tinect-passkeys.page', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        return new JsonResponse(['enroll' => $profileUrl, 'manage' => $profileUrl]);
+        return new JsonResponse(['enroll' => $manageUrl, 'manage' => $manageUrl]);
+    }
+
+    #[Route(
+        path: '/account/passkeys',
+        name: 'frontend.tinect-passkeys.page',
+        defaults: [PlatformRequest::ATTRIBUTE_LOGIN_REQUIRED => true, PlatformRequest::ATTRIBUTE_NO_STORE => true],
+        methods: [Request::METHOD_GET]
+    )]
+    public function page(Request $request, SalesChannelContext $context): Response
+    {
+        $page = $this->accountPasskeysPageLoader->load($request, $context, $this->getLoggedInCustomer($context));
+
+        return $this->renderStorefront('@TinectPasskeys/storefront/page/account/passkeys/index.html.twig', ['page' => $page]);
     }
 
     #[Route(
@@ -234,7 +245,7 @@ class PasskeyController extends StorefrontController
             $context,
             $customer,
             $name,
-            $this->generateUrl('frontend.account.profile.page', ['_fragment' => 'tinect-passkeys'], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->generateUrl('frontend.tinect-passkeys.page', [], UrlGeneratorInterface::ABSOLUTE_URL),
             (new \DateTimeImmutable())->format(\DateTimeInterface::ATOM),
             $this->getShortenedClientIp($request),
             $this->deviceDescriber->describe($request->headers->get('User-Agent'))
@@ -286,7 +297,7 @@ class PasskeyController extends StorefrontController
             return new JsonResponse(['success' => true]);
         }
 
-        return $this->redirectToRoute('frontend.account.profile.page', ['_fragment' => 'tinect-passkeys']);
+        return $this->redirectToRoute('frontend.tinect-passkeys.page');
     }
 
     #[Route(
