@@ -10,7 +10,9 @@
             "description": "Avec une clé d’accès, vous vous connectez sans mot de passe – par empreinte digitale, reconnaissance faciale ou code PIN de l’appareil.",
             "createdAt": "Créée le",
             "lastUsedAt": "dernière utilisation",
-            "delete": "Supprimer"
+            "delete": "Supprimer",
+            "hint": "Vous pouvez gérer vos passkeys sur une page dédiée de votre compte client.",
+            "manage": "Gérer les passkeys"
         },
         "register": {
             "button": "Ajouter une clé d’accès",
@@ -77,6 +79,9 @@
             "enableConfirm": "Oui, réactiver",
             "confirmWithPasskey": "Pour votre sécurité, vous confirmez ensuite la modification avec votre clé d’accès.",
             "errorConfirmation": "La confirmation avec votre clé d’accès a échoué. Veuillez réessayer."
+        },
+        "account": {
+            "link": "Passkeys"
         }
     },
     "error": {
