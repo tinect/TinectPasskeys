@@ -1,0 +1,69 @@
+{% sw_extends '@Storefront/storefront/page/account/index.html.twig' %}
+
+{% block page_account_overview %}
+    {{ parent() }}
+
+    {% if page.extensions.tinectPasskeys.showSetupModal ?? false %}
+        {% set tinectPasskeySetupOptions = {
+            optionsUrl: path('frontend.tinect-passkeys.register.options'),
+            registerUrl: path('frontend.tinect-passkeys.register'),
+            confirmOptionsUrl: '',
+            errorMessage: 'tinect-passkeys.register.error'|trans|striptags,
+        } %}
+
+        <div class="modal fade"
+             id="tinectPasskeySetupModal"
+             tabindex="-1"
+             aria-labelledby="tinectPasskeySetupModalTitle"
+             aria-hidden="true"
+             data-tinect-passkey-setup="true"
+             data-tinect-passkey-setup-options="{{ tinectPasskeySetupOptions|json_encode }}">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title h5" id="tinectPasskeySetupModalTitle">
+                            {{ 'tinect-passkeys.setup.title'|trans|sw_sanitize }}
+                        </h2>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="{{ 'global.default.close'|trans|striptags }}"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>{{ 'tinect-passkeys.setup.description'|trans|sw_sanitize }}</p>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="tinectPasskeySetupName">
+                                {{ 'tinect-passkeys.register.nameLabel'|trans|sw_sanitize }}
+                            </label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="tinectPasskeySetupName"
+                                   name="name"
+                                   maxlength="255"
+                                   placeholder="{{ 'tinect-passkeys.register.namePlaceholder'|trans|striptags }}">
+                        </div>
+
+                        <div class="tinect-passkey-setup-error alert alert-danger d-none" role="alert"></div>
+                        <div class="tinect-passkey-setup-unsupported alert alert-warning d-none" role="alert">
+                            {{ 'tinect-passkeys.register.unsupported'|trans|sw_sanitize }}
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            {{ 'tinect-passkeys.setup.skip'|trans|sw_sanitize }}
+                        </button>
+                        <button type="button"
+                                class="tinect-passkey-setup-submit btn btn-primary">
+                            {{ 'tinect-passkeys.register.button'|trans|sw_sanitize }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

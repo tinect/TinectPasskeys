@@ -33,6 +33,8 @@ class DeviceDescriber
         'Linux' => 'Linux',
     ];
 
+    private const MAX_USER_AGENT_LENGTH = 512;
+
     public function describe(?string $userAgent): string
     {
         if ($userAgent === null || $userAgent === '') {
@@ -40,8 +42,8 @@ class DeviceDescriber
         }
 
         return implode(' / ', array_filter([
-            $this->find($userAgent, self::BROWSERS),
-            $this->find($userAgent, self::OPERATING_SYSTEMS),
+            $this->find(mb_substr($userAgent, 0, self::MAX_USER_AGENT_LENGTH), self::BROWSERS),
+            $this->find(mb_substr($userAgent, 0, self::MAX_USER_AGENT_LENGTH), self::OPERATING_SYSTEMS),
         ]));
     }
 

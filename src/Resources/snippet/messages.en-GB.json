@@ -5,6 +5,11 @@
             "error": "Logging in with your passkey failed. Please try again or log in with your password.",
             "errorThrottled": "Too many login attempts. Please wait a moment."
         },
+        "setup": {
+            "title": "Set up a passkey",
+            "description": "Log in quickly and securely without a password – using your fingerprint, face recognition or device PIN.",
+            "skip": "Not now"
+        },
         "profile": {
             "title": "Passkeys",
             "description": "A passkey lets you log in without a password, using your fingerprint, face or device PIN.",

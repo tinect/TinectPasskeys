@@ -5,8 +5,11 @@ namespace Tinect\Passkeys;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Shopware\Core\Framework\Plugin;
+use Shopware\Core\Framework\Plugin\Context\InstallContext;
 use Shopware\Core\Framework\Plugin\Context\UninstallContext;
+use Shopware\Core\Framework\Plugin\Context\UpdateContext;
 use Shopware\Core\Framework\Uuid\Uuid;
+use Shopware\Storefront\Theme\ThemeLifecycleService;
 use Tinect\Passkeys\Migration\Migration1793318500CreatePasskeyAddedMailFlow;
 use Tinect\Passkeys\Migration\Migration1793318700CreatePasswordLoginMailFlows;
 
@@ -15,6 +18,32 @@ class TinectPasskeys extends Plugin
     public function executeComposerCommands(): bool
     {
         return true;
+    }
+
+    public function postInstall(InstallContext $installContext): void
+    {
+        $this->compileThemes($installContext->getContext());
+    }
+
+    public function postUpdate(UpdateContext $updateContext): void
+    {
+        $this->compileThemes($updateContext->getContext());
+    }
+
+    private function compileThemes(\Shopware\Core\Framework\Context $context): void
+    {
+        $container = $this->container;
+        if ($container === null) {
+            return;
+        }
+
+        if (!$container->has(ThemeLifecycleService::class)) {
+            return;
+        }
+
+        /** @var ThemeLifecycleService $themeLifecycleService */
+        $themeLifecycleService = $container->get(ThemeLifecycleService::class);
+        $themeLifecycleService->refreshThemes($context);
     }
 
     public function uninstall(UninstallContext $uninstallContext): void
@@ -28,8 +57,6 @@ class TinectPasskeys extends Plugin
             return;
         }
 
-        $connection->executeStatement('DROP TABLE IF EXISTS `tinect_passkey`');
-        $connection->executeStatement('DROP TABLE IF EXISTS `tinect_passkey_customer_setting`');
         $flowIds = [
             Migration1793318500CreatePasskeyAddedMailFlow::FLOW_ID,
             Migration1793318700CreatePasswordLoginMailFlows::DISABLED_FLOW_ID,
@@ -41,20 +68,25 @@ class TinectPasskeys extends Plugin
             Migration1793318700CreatePasswordLoginMailFlows::ENABLED_MAIL_TEMPLATE_TYPE_ID,
         ];
 
-        $connection->executeStatement(
-            'DELETE FROM `flow` WHERE `id` IN (:ids)',
-            ['ids' => Uuid::fromHexToBytesList($flowIds)],
-            ['ids' => ArrayParameterType::BINARY]
-        );
-        $connection->executeStatement(
-            'DELETE FROM `mail_template` WHERE `mail_template_type_id` IN (:ids)',
-            ['ids' => Uuid::fromHexToBytesList($mailTemplateTypeIds)],
-            ['ids' => ArrayParameterType::BINARY]
-        );
-        $connection->executeStatement(
-            'DELETE FROM `mail_template_type` WHERE `id` IN (:ids)',
-            ['ids' => Uuid::fromHexToBytesList($mailTemplateTypeIds)],
-            ['ids' => ArrayParameterType::BINARY]
-        );
+        $connection->transactional(function (Connection $connection) use ($flowIds, $mailTemplateTypeIds): void {
+            $connection->executeStatement('DROP TABLE IF EXISTS `tinect_passkey`');
+            $connection->executeStatement('DROP TABLE IF EXISTS `tinect_passkey_customer_setting`');
+
+            $connection->executeStatement(
+                'DELETE FROM `flow` WHERE `id` IN (:ids)',
+                ['ids' => Uuid::fromHexToBytesList($flowIds)],
+                ['ids' => ArrayParameterType::BINARY]
+            );
+            $connection->executeStatement(
+                'DELETE FROM `mail_template` WHERE `mail_template_type_id` IN (:ids)',
+                ['ids' => Uuid::fromHexToBytesList($mailTemplateTypeIds)],
+                ['ids' => ArrayParameterType::BINARY]
+            );
+            $connection->executeStatement(
+                'DELETE FROM `mail_template_type` WHERE `id` IN (:ids)',
+                ['ids' => Uuid::fromHexToBytesList($mailTemplateTypeIds)],
+                ['ids' => ArrayParameterType::BINARY]
+            );
+        });
     }
 }

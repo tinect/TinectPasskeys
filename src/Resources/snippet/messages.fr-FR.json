@@ -5,6 +5,11 @@
             "error": "La connexion avec la clé d’accès a échoué. Veuillez réessayer ou vous connecter avec votre mot de passe.",
             "errorThrottled": "Trop de tentatives de connexion. Veuillez patienter un instant."
         },
+        "setup": {
+            "title": "Configurer une clé d'accès",
+            "description": "Connectez-vous rapidement et en toute sécurité sans mot de passe – par empreinte digitale, reconnaissance faciale ou code PIN de l'appareil.",
+            "skip": "Pas maintenant"
+        },
         "profile": {
             "title": "Clés d’accès",
             "description": "Avec une clé d’accès, vous vous connectez sans mot de passe – par empreinte digitale, reconnaissance faciale ou code PIN de l’appareil.",

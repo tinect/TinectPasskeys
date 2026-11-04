@@ -26,9 +26,10 @@ use Tinect\Passkeys\Service\PasskeyRepository;
 class PasswordLoginRouteDecorator extends AbstractLoginRoute
 {
     /**
-     * Same placeholder as in AccountService, keeps the response time equal to a real password check
+     * Same placeholder as in AccountService, keeps the response time equal to a real password check.
+     * Generated per instance so it is never stored in source code and is safe under all PHP runtimes.
      */
-    private const PLACEHOLDER_PASSWORD_HASH = '$2y$12$PVcA5R6ri9kS.7FnFUBRIOLwqU//bCicx5RFxwecAAccbmZ7V7PKu';
+    private readonly string $placeholderPasswordHash;
 
     public function __construct(
         #[AutowireDecorated]
@@ -38,12 +39,17 @@ class PasswordLoginRouteDecorator extends AbstractLoginRoute
         private readonly RateLimiter $rateLimiter,
         private readonly RequestStack $requestStack,
     ) {
+        $this->placeholderPasswordHash = password_hash(bin2hex(random_bytes(16)), \PASSWORD_BCRYPT, ['cost' => 12]);
     }
 
     public function getDecorated(): AbstractLoginRoute
     {
         return $this->decorated;
     }
+
+    public const SESSION_SUGGEST_PASSKEY = 'tinect_passkeys.suggest_passkey';
+
+    public const SESSION_PASSWORD_VERIFIED = 'tinect_passkeys.password_verified';
 
     public function login(#[\SensitiveParameter] RequestDataBag $data, SalesChannelContext $context): ContextTokenResponse
     {
@@ -56,13 +62,20 @@ class PasswordLoginRouteDecorator extends AbstractLoginRoute
             // the decorated route is not called, so its rate limiting has to be applied here
             $this->ensureNotThrottled($email);
 
-            password_verify($data->getString('password'), self::PLACEHOLDER_PASSWORD_HASH);
+            password_verify($data->getString('password'), $this->placeholderPasswordHash);
 
             // same error as wrong credentials, so it does not reveal that the account exists and uses passkeys
             throw CustomerException::badCredentials();
         }
 
-        return $this->decorated->login($data, $context);
+        $response = $this->decorated->login($data, $context);
+
+        // suggest adding a passkey after successful password login
+        $session = $this->requestStack->getMainRequest()?->getSession();
+        $session?->set(self::SESSION_SUGGEST_PASSKEY, true);
+        $session?->set(self::SESSION_PASSWORD_VERIFIED, true);
+
+        return $response;
     }
 
     /**

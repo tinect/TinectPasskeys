@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Tinect\Passkeys\Decorator\PasswordLoginRouteDecorator;
 use Tinect\Passkeys\Event\AbstractPasswordLoginEvent;
 use Tinect\Passkeys\Event\PasskeyAddedEvent;
 use Tinect\Passkeys\Page\Account\Passkeys\AccountPasskeysPageLoader;
@@ -36,9 +37,29 @@ use Tinect\Passkeys\Service\WebauthnService;
 #[Route(defaults: [PlatformRequest::ATTRIBUTE_ROUTE_SCOPE => [StorefrontRouteScope::ID]])]
 class PasskeyController extends StorefrontController
 {
-    private const MAX_NAME_LENGTH = 255;
+    /**
+     * Routes the customer can be redirected to after a passkey login.
+     * Only parameter-free storefront routes are allowed to prevent open redirect abuse.
+     * Extend this list when your shop uses additional post-login destinations.
+     *
+     * @var list<string>
+     */
+    private const ALLOWED_REDIRECT_ROUTES = [
+        'frontend.account.home.page',
+        'frontend.account.order.page',
+        'frontend.account.profile.page',
+        'frontend.account.address.page',
+        'frontend.account.payment.page',
+        'frontend.checkout.cart.page',
+        'frontend.checkout.confirm.page',
+        'frontend.home.page',
+    ];
 
     private const MAX_PASSKEYS = 20;
+
+    private const MAX_CREDENTIAL_SIZE = 65536; // 64 KB
+
+    private const MAX_NAME_LENGTH = 255;
 
     /**
      * @param EntityRepository<CustomerCollection> $customerRepository
@@ -107,6 +128,10 @@ class PasskeyController extends StorefrontController
     public function login(Request $request, SalesChannelContext $context): JsonResponse
     {
         $credentialJson = $request->request->getString('credential');
+
+        if (strlen($credentialJson) > self::MAX_CREDENTIAL_SIZE) {
+            return $this->createErrorResponse('tinect-passkeys.login.error', Response::HTTP_BAD_REQUEST);
+        }
         $rateLimitKey = 'tinect-passkey-' . $request->getClientIp();
 
         try {
@@ -175,6 +200,8 @@ class PasskeyController extends StorefrontController
 
                 return $this->createErrorResponse('tinect-passkeys.passwordLogin.errorConfirmation');
             }
+        } elseif ($this->consumePasswordLoginSession($request)) {
+            // fresh password login in this session – no need to re-enter the password
         } else {
             $rateLimitKey = strtolower($customer->getEmail()) . '-' . $request->getClientIp();
 
@@ -222,7 +249,12 @@ class PasskeyController extends StorefrontController
                 throw new \RuntimeException('Passkey limit reached');
             }
 
-            $credentialRecord = $this->webauthnService->verifyCreation($request, $request->request->getString('credential'), $customer->getId());
+            $credentialJson = $request->request->getString('credential');
+            if (strlen($credentialJson) > self::MAX_CREDENTIAL_SIZE) {
+                throw new \RuntimeException('Credential payload too large');
+            }
+
+            $credentialRecord = $this->webauthnService->verifyCreation($request, $credentialJson, $customer->getId());
 
             $this->passkeyRepository->insert(
                 $customer->getId(),
@@ -358,8 +390,23 @@ class PasskeyController extends StorefrontController
     /**
      * @throws \Throwable when the passkey does not belong to the customer or the assertion is invalid
      */
+    private function consumePasswordLoginSession(Request $request): bool
+    {
+        $session = $request->getSession();
+        $flag = (bool) $session->get(PasswordLoginRouteDecorator::SESSION_PASSWORD_VERIFIED, false);
+        if ($flag) {
+            $session->remove(PasswordLoginRouteDecorator::SESSION_PASSWORD_VERIFIED);
+        }
+
+        return $flag;
+    }
+
     private function confirmWithPasskey(Request $request, string $customerId, string $credentialJson): void
     {
+        if (strlen($credentialJson) > self::MAX_CREDENTIAL_SIZE) {
+            throw new \RuntimeException('Credential payload too large');
+        }
+
         $passkey = $this->passkeyRepository->findByCredentialId(
             $this->webauthnService->getAssertionCredentialId($credentialJson)
         );
@@ -428,11 +475,9 @@ class PasskeyController extends StorefrontController
     {
         $redirectTo = $request->request->getString('redirectTo');
 
-        if (str_starts_with($redirectTo, 'frontend.') && $redirectTo !== 'frontend.account.login.page') {
-            $parameters = json_decode($request->request->getString('redirectParameters', '[]'), true);
-
+        if (\in_array($redirectTo, self::ALLOWED_REDIRECT_ROUTES, true)) {
             try {
-                return $this->generateUrl($redirectTo, \is_array($parameters) ? $parameters : []);
+                return $this->generateUrl($redirectTo);
             } catch (\Throwable) {
                 // fall through to the account overview
             }

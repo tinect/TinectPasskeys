@@ -109,13 +109,16 @@ export default class TinectPasskeyLoginPlugin extends window.PluginBaseClass {
         const result = await postForm(this.options.loginUrl, {
             credential: serializeCredential(credential),
             redirectTo: this._form?.querySelector('[name="redirectTo"]')?.value,
-            redirectParameters: this._form?.querySelector(
-                '[name="redirectParameters"]'
-            )?.value,
         });
 
         // the indicator stays until the browser has navigated away
-        window.location.assign(result.redirectUrl);
+        const redirectUrl = result.redirectUrl;
+        if (typeof redirectUrl !== 'string' || /^javascript:/i.test(redirectUrl)) {
+            window.location.assign('/');
+
+            return;
+        }
+        window.location.assign(redirectUrl);
     }
 
     _setLoading(loading) {

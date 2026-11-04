@@ -74,6 +74,10 @@ export default class TinectPasskeyRegisterPlugin
                 name: nameInput.value,
             });
 
+            const expires = new Date();
+            expires.setFullYear(expires.getFullYear() + 1);
+            document.cookie = `tinect_passkey_device=1; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
+
             // the indicator stays until the page has reloaded
             window.location.reload();
         } catch (error) {

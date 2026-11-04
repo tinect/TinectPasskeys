@@ -30,6 +30,8 @@ The plugin is compatible with Shopware 6.7 and PHP 8.2 and higher.
   `example.com`. If your sales channels use several domains, customers need a passkey per domain.
 - Behind a TLS terminating proxy or load balancer, configure `TRUSTED_PROXIES`, so Shopware sees the `https` origin.
   Otherwise the passkey verification fails.
+- Set `session.cookie_samesite` to `Strict` or `Lax` in your PHP configuration (`php.ini` or `APP_ENV`-specific config).
+  This protects the session cookie used to store the WebAuthn challenge against cross-site request forgery.
 - Other login checks still apply, e.g. a two-factor authentication plugin will still ask for its code after the passkey login.
 - Passkeys are removed together with the customer account.
 - A disabled password login answers like wrong credentials, so it does not reveal that the account exists. It is

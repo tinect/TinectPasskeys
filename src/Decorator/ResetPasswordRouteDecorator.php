@@ -42,6 +42,7 @@ class ResetPasswordRouteDecorator extends AbstractResetPasswordRoute
             ['hash' => $data->getString('hash')]
         );
 
+        // only enable the password login when the reset actually succeeded (decorated may throw)
         $response = $this->decorated->resetPassword($data, $context);
 
         if (\is_string($customerId) && Uuid::isValid($customerId)) {

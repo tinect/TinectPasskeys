@@ -5,6 +5,11 @@
             "error": "Inloggen met de passkey is mislukt. Probeer het opnieuw of log in met uw wachtwoord.",
             "errorThrottled": "Te veel inlogpogingen. Wacht even."
         },
+        "setup": {
+            "title": "Passkey instellen",
+            "description": "Log voortaan snel en veilig in zonder wachtwoord – met vingerafdruk, gezichtsherkenning of de pincode van uw apparaat.",
+            "skip": "Niet nu"
+        },
         "profile": {
             "title": "Passkeys",
             "description": "Met een passkey logt u in zonder wachtwoord – met vingerafdruk, gezichtsherkenning of de pincode van uw apparaat.",

@@ -17,6 +17,32 @@ readonly class PasskeyRepository
     }
 
     /**
+     * Returns passkeys and the password login setting in a single query.
+     *
+     * @return array{passkeys: list<PasskeyRow>, passwordLoginDisabled: bool}
+     */
+    public function findByCustomerIdWithSettings(string $customerId): array
+    {
+        $customerIdBytes = Uuid::fromHexToBytes($customerId);
+
+        /** @var list<PasskeyRow> $rows */
+        $rows = $this->connection->fetchAllAssociative(
+            'SELECT LOWER(HEX(`id`)) AS `id`, `credential`, `name`, `last_used_at` AS `lastUsedAt`, `created_at` AS `createdAt`
+             FROM `tinect_passkey`
+             WHERE `customer_id` = :customerId
+             ORDER BY `created_at` ASC',
+            ['customerId' => $customerIdBytes]
+        );
+
+        $disabled = (bool) $this->connection->fetchOne(
+            'SELECT `password_login_disabled` FROM `tinect_passkey_customer_setting` WHERE `customer_id` = :customerId',
+            ['customerId' => $customerIdBytes]
+        );
+
+        return ['passkeys' => $rows, 'passwordLoginDisabled' => $disabled];
+    }
+
+    /**
      * @return list<PasskeyRow>
      */
     public function findByCustomerId(string $customerId): array

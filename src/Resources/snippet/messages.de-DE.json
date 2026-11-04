@@ -5,6 +5,11 @@
             "error": "Die Anmeldung mit dem Passkey ist fehlgeschlagen. Bitte versuchen Sie es erneut oder melden Sie sich mit Ihrem Passwort an.",
             "errorThrottled": "Zu viele Anmeldeversuche. Bitte warten Sie einen Moment."
         },
+        "setup": {
+            "title": "Passkey einrichten",
+            "description": "Melden Sie sich künftig schnell und sicher ohne Passwort an – per Fingerabdruck, Gesichtserkennung oder Geräte-PIN.",
+            "skip": "Jetzt nicht"
+        },
         "profile": {
             "title": "Passkeys",
             "description": "Mit einem Passkey melden Sie sich ohne Passwort an – per Fingerabdruck, Gesichtserkennung oder Geräte-PIN.",

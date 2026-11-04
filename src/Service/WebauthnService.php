@@ -39,7 +39,12 @@ class WebauthnService
     private const ALGORITHM_ES256 = -7;
     private const ALGORITHM_RS256 = -257;
 
-    private ?SerializerInterface $serializer = null;
+    private readonly SerializerInterface $serializer;
+
+    public function __construct()
+    {
+        $this->serializer = (new WebauthnSerializerFactory(AttestationStatementSupportManager::create()))->create();
+    }
 
     /**
      * @param list<string> $existingCredentials JSON encoded credential records of the customer
@@ -63,6 +68,7 @@ class WebauthnService
             authenticatorSelection: AuthenticatorSelectionCriteria::create(
                 userVerification: AuthenticatorSelectionCriteria::USER_VERIFICATION_REQUIREMENT_REQUIRED,
                 residentKey: AuthenticatorSelectionCriteria::RESIDENT_KEY_REQUIREMENT_REQUIRED,
+                authenticatorAttachment: AuthenticatorSelectionCriteria::AUTHENTICATOR_ATTACHMENT_PLATFORM,
             ),
             attestation: PublicKeyCredentialCreationOptions::ATTESTATION_CONVEYANCE_PREFERENCE_NONE,
             excludeCredentials: array_map(
@@ -213,6 +219,6 @@ class WebauthnService
 
     private function getSerializer(): SerializerInterface
     {
-        return $this->serializer ??= (new WebauthnSerializerFactory(AttestationStatementSupportManager::create()))->create();
+        return $this->serializer;
     }
 }

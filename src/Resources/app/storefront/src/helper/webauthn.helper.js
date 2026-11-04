@@ -126,6 +126,7 @@ export async function postForm(url, data) {
     const json = await response.json().catch(() => ({}));
 
     if (!response.ok) {
+        // serverMessage is always assigned to textContent (never innerHTML) in all plugins
         const error = new Error(json.message || response.statusText);
         error.serverMessage = json.message;
         throw error;

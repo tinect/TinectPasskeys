@@ -32,7 +32,7 @@
                                     {% for passkey in tinectPasskeys %}
                                         <li class="list-group-item d-flex justify-content-between align-items-center gap-2">
                                             <div>
-                                                <strong>{{ passkey.name }}</strong>
+                                                <strong>{{ passkey.name|e }}</strong>
                                                 <div class="small text-muted">
                                                     {{ 'tinect-passkeys.profile.createdAt'|trans|sw_sanitize }}
                                                     {{ passkey.createdAt|format_date('medium', locale=app.request.locale) }}
@@ -75,7 +75,7 @@
                                                     </div>
 
                                                     <div class="modal-body">
-                                                        {{ 'tinect-passkeys.delete.confirmText'|trans({ '%name%': passkey.name|e })|raw }}
+                                                        {{ 'tinect-passkeys.delete.confirmText'|trans({ '%name%': passkey.name })|sw_sanitize }}
 
                                                         {% if tinectPasswordLoginDisabled %}
                                                             <p class="mt-2 mb-0 small text-muted">{{ 'tinect-passkeys.passwordLogin.confirmWithPasskey'|trans|sw_sanitize }}</p>

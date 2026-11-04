@@ -45,5 +45,14 @@
             "docker run --rm -v $(pwd):/ext shopware/shopware-cli:latest extension validate --check-against highest --full /ext"
         ],
         "format": "docker run --rm -v $(pwd):/ext shopware/shopware-cli:latest extension format /ext"
+    },
+    "archive": {
+        "exclude": [
+            "/vendor",
+            "/var",
+            "/.github",
+            "/*.code-workspace",
+            "/phpstan.neon"
+        ]
     }
 }
