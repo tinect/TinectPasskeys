@@ -1,0 +1,9 @@
+{
+  "main.js": {
+    "file": "js/tinect-passkeys-L22CANVE.js",
+    "name": "tinect-passkeys",
+    "src": "main.js",
+    "isEntry": true,
+    "css": []
+  }
+}
