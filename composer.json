@@ -3,7 +3,7 @@
     "description": "Passkey (WebAuthn) login for storefront customers",
     "type": "shopware-platform-plugin",
     "license": "MIT",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "autoload": {
         "psr-4": {
             "Tinect\\Passkeys\\": "src/"
@@ -30,8 +30,8 @@
         }
     },
     "require": {
-        "shopware/core": "~6.7.0",
-        "shopware/storefront": "~6.7.0",
+        "shopware/core": "~6.7.10",
+        "shopware/storefront": "*",
         "web-auth/webauthn-lib": "^5.3.1"
     },
     "authors": [
