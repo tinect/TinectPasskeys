@@ -12,7 +12,10 @@
             "lastUsedAt": "last used",
             "delete": "Remove",
             "hint": "You can manage your passkeys on a separate page in your customer account.",
-            "manage": "Manage passkeys"
+            "manage": "Manage passkeys",
+            "listTitle": "Your passkeys",
+            "count": "{1} 1 passkey|]1,Inf[ %count% passkeys",
+            "empty": "You have not added a passkey yet."
         },
         "register": {
             "button": "Add passkey",
@@ -26,7 +29,8 @@
             "unsupported": "Your browser does not support passkeys.",
             "success": "The passkey has been added.",
             "errorLimit": "You have reached the maximum number of passkeys. Please remove a passkey first.",
-            "confirmWithPasskey": "As the password login is disabled, you first confirm adding a passkey with one of your existing passkeys."
+            "confirmWithPasskey": "As the password login is disabled, you first confirm adding a passkey with one of your existing passkeys.",
+            "title": "Add a new passkey"
         },
         "delete": {
             "success": "The passkey has been removed.",
@@ -78,7 +82,10 @@
             "enableConfirmText": "Do you really want to enable the password login again? Your account is then accessible with your password again.",
             "enableConfirm": "Yes, enable again",
             "confirmWithPasskey": "For your security, you confirm the change with your passkey afterwards.",
-            "errorConfirmation": "The confirmation with your passkey failed. Please try again."
+            "errorConfirmation": "The confirmation with your passkey failed. Please try again.",
+            "title": "Password login",
+            "statusDisabled": "Disabled · passkey only",
+            "statusEnabled": "Enabled"
         },
         "account": {
             "link": "Passkeys"

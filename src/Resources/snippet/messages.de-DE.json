@@ -12,7 +12,10 @@
             "lastUsedAt": "zuletzt verwendet",
             "delete": "Entfernen",
             "hint": "Ihre Passkeys können Sie auf einer eigenen Seite in Ihrem Kundenkonto verwalten.",
-            "manage": "Passkeys verwalten"
+            "manage": "Passkeys verwalten",
+            "listTitle": "Ihre Passkeys",
+            "count": "{1} 1 Passkey|]1,Inf[ %count% Passkeys",
+            "empty": "Sie haben noch keinen Passkey hinzugefügt."
         },
         "register": {
             "button": "Passkey hinzufügen",
@@ -26,7 +29,8 @@
             "unsupported": "Ihr Browser unterstützt keine Passkeys.",
             "success": "Der Passkey wurde hinzugefügt.",
             "errorLimit": "Sie haben die maximale Anzahl an Passkeys erreicht. Entfernen Sie zuerst einen Passkey.",
-            "confirmWithPasskey": "Da die Anmeldung per Passwort deaktiviert ist, bestätigen Sie das Hinzufügen zuerst mit einem Ihrer vorhandenen Passkeys."
+            "confirmWithPasskey": "Da die Anmeldung per Passwort deaktiviert ist, bestätigen Sie das Hinzufügen zuerst mit einem Ihrer vorhandenen Passkeys.",
+            "title": "Neuen Passkey hinzufügen"
         },
         "delete": {
             "success": "Der Passkey wurde entfernt.",
@@ -78,7 +82,10 @@
             "enableConfirmText": "Möchten Sie die Anmeldung per Passwort wirklich wieder aktivieren? Ihr Konto ist dann auch wieder mit Ihrem Passwort zugänglich.",
             "enableConfirm": "Ja, wieder aktivieren",
             "confirmWithPasskey": "Zur Sicherheit bestätigen Sie die Änderung anschließend mit Ihrem Passkey.",
-            "errorConfirmation": "Die Bestätigung mit Ihrem Passkey ist fehlgeschlagen. Bitte versuchen Sie es erneut."
+            "errorConfirmation": "Die Bestätigung mit Ihrem Passkey ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
+            "title": "Anmeldung per Passwort",
+            "statusDisabled": "Deaktiviert · nur Passkey",
+            "statusEnabled": "Aktiv"
         },
         "account": {
             "link": "Passkeys"

@@ -12,7 +12,10 @@
             "lastUsedAt": "dernière utilisation",
             "delete": "Supprimer",
             "hint": "Vous pouvez gérer vos passkeys sur une page dédiée de votre compte client.",
-            "manage": "Gérer les passkeys"
+            "manage": "Gérer les passkeys",
+            "listTitle": "Vos clés d’accès",
+            "count": "{1} 1 clé d’accès|]1,Inf[ %count% clés d’accès",
+            "empty": "Vous n’avez encore ajouté aucune clé d’accès."
         },
         "register": {
             "button": "Ajouter une clé d’accès",
@@ -26,7 +29,8 @@
             "unsupported": "Votre navigateur ne prend pas en charge les clés d’accès.",
             "success": "La clé d’accès a été ajoutée.",
             "errorLimit": "Vous avez atteint le nombre maximal de clés d’accès. Veuillez d’abord supprimer une clé d’accès.",
-            "confirmWithPasskey": "La connexion par mot de passe étant désactivée, vous confirmez d’abord l’ajout avec l’une de vos clés d’accès existantes."
+            "confirmWithPasskey": "La connexion par mot de passe étant désactivée, vous confirmez d’abord l’ajout avec l’une de vos clés d’accès existantes.",
+            "title": "Ajouter une nouvelle clé d’accès"
         },
         "delete": {
             "success": "La clé d’accès a été supprimée.",
@@ -78,7 +82,10 @@
             "enableConfirmText": "Voulez-vous vraiment réactiver la connexion par mot de passe ? Votre compte sera alors de nouveau accessible avec votre mot de passe.",
             "enableConfirm": "Oui, réactiver",
             "confirmWithPasskey": "Pour votre sécurité, vous confirmez ensuite la modification avec votre clé d’accès.",
-            "errorConfirmation": "La confirmation avec votre clé d’accès a échoué. Veuillez réessayer."
+            "errorConfirmation": "La confirmation avec votre clé d’accès a échoué. Veuillez réessayer.",
+            "title": "Connexion par mot de passe",
+            "statusDisabled": "Désactivée · clé d’accès uniquement",
+            "statusEnabled": "Activée"
         },
         "account": {
             "link": "Passkeys"
