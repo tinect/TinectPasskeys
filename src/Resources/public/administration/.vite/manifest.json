@@ -1,0 +1,9 @@
+{
+  "main.js": {
+    "file": "js/tinect-passkeys-227MI2YO.js",
+    "name": "tinect-passkeys",
+    "src": "main.js",
+    "isEntry": true,
+    "css": []
+  }
+}
