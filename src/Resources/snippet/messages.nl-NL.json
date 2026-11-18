@@ -3,7 +3,8 @@
         "login": {
             "button": "Inloggen met passkey",
             "error": "Inloggen met de passkey is mislukt. Probeer het opnieuw of log in met uw wachtwoord.",
-            "errorThrottled": "Te veel inlogpogingen. Wacht even."
+            "errorThrottled": "Te veel inlogpogingen. Wacht even.",
+            "errorNotAllowed": "Het inloggen met de passkey is geannuleerd of mislukt. Probeer het opnieuw of log in met uw wachtwoord."
         },
         "profile": {
             "title": "Passkeys",
@@ -30,7 +31,8 @@
             "success": "De passkey is toegevoegd.",
             "errorLimit": "U heeft het maximale aantal passkeys bereikt. Verwijder eerst een passkey.",
             "confirmWithPasskey": "Omdat inloggen met wachtwoord is uitgeschakeld, bevestigt u het toevoegen eerst met een van uw bestaande passkeys.",
-            "title": "Nieuwe passkey toevoegen"
+            "title": "Nieuwe passkey toevoegen",
+            "errorNotAllowed": "Het instellen van de passkey is geannuleerd of mislukt. Probeer het opnieuw."
         },
         "delete": {
             "success": "De passkey is verwijderd.",
@@ -85,7 +87,8 @@
             "errorConfirmation": "De bevestiging met uw passkey is mislukt. Probeer het opnieuw.",
             "title": "Inloggen met wachtwoord",
             "statusDisabled": "Uitgeschakeld · alleen passkey",
-            "statusEnabled": "Ingeschakeld"
+            "statusEnabled": "Ingeschakeld",
+            "errorNotAllowed": "De bevestiging met uw passkey is geannuleerd of mislukt. Probeer het opnieuw."
         },
         "account": {
             "link": "Passkeys"

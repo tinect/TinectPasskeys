@@ -3,7 +3,8 @@
         "login": {
             "button": "Mit Passkey anmelden",
             "error": "Die Anmeldung mit dem Passkey ist fehlgeschlagen. Bitte versuchen Sie es erneut oder melden Sie sich mit Ihrem Passwort an.",
-            "errorThrottled": "Zu viele Anmeldeversuche. Bitte warten Sie einen Moment."
+            "errorThrottled": "Zu viele Anmeldeversuche. Bitte warten Sie einen Moment.",
+            "errorNotAllowed": "Die Anmeldung mit dem Passkey wurde abgebrochen oder ist fehlgeschlagen. Bitte versuchen Sie es erneut oder melden Sie sich mit Ihrem Passwort an."
         },
         "profile": {
             "title": "Passkeys",
@@ -30,7 +31,8 @@
             "success": "Der Passkey wurde hinzugefügt.",
             "errorLimit": "Sie haben die maximale Anzahl an Passkeys erreicht. Entfernen Sie zuerst einen Passkey.",
             "confirmWithPasskey": "Da die Anmeldung per Passwort deaktiviert ist, bestätigen Sie das Hinzufügen zuerst mit einem Ihrer vorhandenen Passkeys.",
-            "title": "Neuen Passkey hinzufügen"
+            "title": "Neuen Passkey hinzufügen",
+            "errorNotAllowed": "Die Einrichtung des Passkeys wurde abgebrochen oder ist fehlgeschlagen. Bitte versuchen Sie es erneut."
         },
         "delete": {
             "success": "Der Passkey wurde entfernt.",
@@ -85,7 +87,8 @@
             "errorConfirmation": "Die Bestätigung mit Ihrem Passkey ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
             "title": "Anmeldung per Passwort",
             "statusDisabled": "Deaktiviert · nur Passkey",
-            "statusEnabled": "Aktiv"
+            "statusEnabled": "Aktiv",
+            "errorNotAllowed": "Die Bestätigung mit Ihrem Passkey wurde abgebrochen oder ist fehlgeschlagen. Bitte versuchen Sie es erneut."
         },
         "account": {
             "link": "Passkeys"

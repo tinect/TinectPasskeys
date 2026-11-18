@@ -3,7 +3,8 @@
         "login": {
             "button": "Se connecter avec une clé d’accès",
             "error": "La connexion avec la clé d’accès a échoué. Veuillez réessayer ou vous connecter avec votre mot de passe.",
-            "errorThrottled": "Trop de tentatives de connexion. Veuillez patienter un instant."
+            "errorThrottled": "Trop de tentatives de connexion. Veuillez patienter un instant.",
+            "errorNotAllowed": "La connexion avec la clé d’accès a été annulée ou a échoué. Veuillez réessayer ou vous connecter avec votre mot de passe."
         },
         "profile": {
             "title": "Clés d’accès",
@@ -30,7 +31,8 @@
             "success": "La clé d’accès a été ajoutée.",
             "errorLimit": "Vous avez atteint le nombre maximal de clés d’accès. Veuillez d’abord supprimer une clé d’accès.",
             "confirmWithPasskey": "La connexion par mot de passe étant désactivée, vous confirmez d’abord l’ajout avec l’une de vos clés d’accès existantes.",
-            "title": "Ajouter une nouvelle clé d’accès"
+            "title": "Ajouter une nouvelle clé d’accès",
+            "errorNotAllowed": "La configuration de la clé d’accès a été annulée ou a échoué. Veuillez réessayer."
         },
         "delete": {
             "success": "La clé d’accès a été supprimée.",
@@ -85,7 +87,8 @@
             "errorConfirmation": "La confirmation avec votre clé d’accès a échoué. Veuillez réessayer.",
             "title": "Connexion par mot de passe",
             "statusDisabled": "Désactivée · clé d’accès uniquement",
-            "statusEnabled": "Activée"
+            "statusEnabled": "Activée",
+            "errorNotAllowed": "La confirmation avec votre clé d’accès a été annulée ou a échoué. Veuillez réessayer."
         },
         "account": {
             "link": "Passkeys"
