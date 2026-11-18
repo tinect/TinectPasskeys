@@ -8,6 +8,7 @@
             optionsUrl: path('frontend.tinect-passkeys.login.options'),
             loginUrl: path('frontend.tinect-passkeys.login'),
             errorMessage: 'tinect-passkeys.login.error'|trans|striptags,
+            notAllowedMessage: 'tinect-passkeys.login.errorNotAllowed'|trans|striptags,
         } %}
 
         <div class="tinect-passkey-login mt-3 d-none"
@@ -21,7 +22,7 @@
             {% endblock %}
 
             {% block component_account_login_passkey_error %}
-                <div class="tinect-passkey-login-error invalid-feedback d-none" role="alert"></div>
+                <div class="tinect-passkey-login-error alert alert-danger mt-2 mb-0 d-none" role="alert"></div>
             {% endblock %}
         </div>
     {% endblock %}

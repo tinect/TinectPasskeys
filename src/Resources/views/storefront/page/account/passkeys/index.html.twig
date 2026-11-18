@@ -21,6 +21,7 @@
                 {% set tinectPasskeyConfirmOptions = {
                     optionsUrl: path('frontend.tinect-passkeys.confirm.options'),
                     errorMessage: 'tinect-passkeys.passwordLogin.errorConfirmation'|trans|striptags,
+                    notAllowedMessage: 'tinect-passkeys.passwordLogin.errorNotAllowed'|trans|striptags,
                     unsupportedMessage: 'tinect-passkeys.register.unsupported'|trans|striptags,
                 } %}
 
@@ -143,6 +144,7 @@
                                 registerUrl: path('frontend.tinect-passkeys.register'),
                                 confirmOptionsUrl: tinectPasswordLoginDisabled ? path('frontend.tinect-passkeys.confirm.options') : '',
                                 errorMessage: 'tinect-passkeys.register.error'|trans|striptags,
+                            notAllowedMessage: 'tinect-passkeys.register.errorNotAllowed'|trans|striptags,
                             } %}
 
                             <div class="tinect-passkey-register-container">

@@ -3,7 +3,8 @@
         "login": {
             "button": "Log in with passkey",
             "error": "Logging in with your passkey failed. Please try again or log in with your password.",
-            "errorThrottled": "Too many login attempts. Please wait a moment."
+            "errorThrottled": "Too many login attempts. Please wait a moment.",
+            "errorNotAllowed": "The passkey login was cancelled or failed. Please try again or log in with your password."
         },
         "profile": {
             "title": "Passkeys",
@@ -30,7 +31,8 @@
             "success": "The passkey has been added.",
             "errorLimit": "You have reached the maximum number of passkeys. Please remove a passkey first.",
             "confirmWithPasskey": "As the password login is disabled, you first confirm adding a passkey with one of your existing passkeys.",
-            "title": "Add a new passkey"
+            "title": "Add a new passkey",
+            "errorNotAllowed": "Setting up the passkey was cancelled or failed. Please try again."
         },
         "delete": {
             "success": "The passkey has been removed.",
@@ -85,7 +87,8 @@
             "errorConfirmation": "The confirmation with your passkey failed. Please try again.",
             "title": "Password login",
             "statusDisabled": "Disabled · passkey only",
-            "statusEnabled": "Enabled"
+            "statusEnabled": "Enabled",
+            "errorNotAllowed": "The confirmation with your passkey was cancelled or failed. Please try again."
         },
         "account": {
             "link": "Passkeys"

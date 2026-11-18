@@ -1,6 +1,7 @@
 import { setButtonLoading } from '../helper/button-loading.helper';
 import {
     isAbortError,
+    isNotAllowedError,
     isConditionalMediationAvailable,
     isPasskeySupported,
     parseRequestOptions,
@@ -15,6 +16,9 @@ export default class TinectPasskeyLoginPlugin extends window.PluginBaseClass {
 
         /** Url to verify the assertion and log in */
         loginUrl: '',
+
+        /** Message if the passkey dialog was cancelled or failed in the browser */
+        notAllowedMessage: '',
 
         /** Fallback message if the server does not return one */
         errorMessage: '',
@@ -61,8 +65,9 @@ export default class TinectPasskeyLoginPlugin extends window.PluginBaseClass {
                 signal: this._conditionalAbortController.signal,
             });
         } catch (error) {
-            // aborted when the button is clicked, the button flow owns the indicator then
-            if (isAbortError(error)) {
+            // aborted when the button is clicked, the button flow owns the indicator then;
+            // a dismissed autofill is no failure worth a message
+            if (isAbortError(error) || isNotAllowedError(error)) {
                 return;
             }
 
@@ -127,8 +132,9 @@ export default class TinectPasskeyLoginPlugin extends window.PluginBaseClass {
             return;
         }
 
-        this._error.textContent =
-            error?.serverMessage || this.options.errorMessage;
+        this._error.textContent = isNotAllowedError(error)
+            ? this.options.notAllowedMessage || this.options.errorMessage
+            : error?.serverMessage || this.options.errorMessage;
         this._error.classList.remove(this.options.invisibleClass);
     }
 

@@ -134,6 +134,16 @@ export async function postForm(url, data) {
     return json;
 }
 
+/**
+ * The request was aborted by the page itself, e.g. the conditional login when the button is clicked
+ */
 export function isAbortError(error) {
-    return error?.name === 'NotAllowedError' || error?.name === 'AbortError';
+    return error?.name === 'AbortError';
+}
+
+/**
+ * The browser does not tell apart a cancelled dialog, a timeout or a missing passkey, so all of them end up here
+ */
+export function isNotAllowedError(error) {
+    return error?.name === 'NotAllowedError';
 }

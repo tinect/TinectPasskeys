@@ -1,6 +1,7 @@
 import { setButtonLoading } from '../helper/button-loading.helper';
 import {
     isAbortError,
+    isNotAllowedError,
     isPasskeySupported,
     parseRequestOptions,
     postForm,
@@ -14,6 +15,9 @@ export default class TinectPasskeyConfirmPlugin extends window.PluginBaseClass {
     static options = {
         /** Url to fetch the assertion options for the confirmation */
         optionsUrl: '',
+
+        /** Message if the passkey dialog was cancelled or failed in the browser */
+        notAllowedMessage: '',
 
         /** Fallback message if the server does not return one */
         errorMessage: '',
@@ -69,11 +73,15 @@ export default class TinectPasskeyConfirmPlugin extends window.PluginBaseClass {
         } catch (error) {
             setButtonLoading(this._submitButton, false);
 
-            if (!isAbortError(error)) {
-                this._showError(
-                    error?.serverMessage || this.options.errorMessage
-                );
+            if (isAbortError(error)) {
+                return;
             }
+
+            this._showError(
+                isNotAllowedError(error)
+                    ? this.options.notAllowedMessage || this.options.errorMessage
+                    : error?.serverMessage || this.options.errorMessage
+            );
         }
     }
 
