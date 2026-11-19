@@ -1,0 +1,11 @@
+{
+  "main.js": {
+    "file": "js/tinect-passkeys-7H7LBCRA.js",
+    "name": "tinect-passkeys",
+    "src": "main.js",
+    "isEntry": true,
+    "css": [
+      "css/tinect-passkeys-DSLVZTRB.css"
+    ]
+  }
+}
