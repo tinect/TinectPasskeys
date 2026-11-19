@@ -39,4 +39,29 @@ export default class TinectPasskeyApiService extends ApiService {
             )
             .then((response) => ApiService.handleResponse(response));
     }
+
+    getDashboardSummary(params = {}) {
+        return this.getDashboard('summary', params);
+    }
+
+    getDashboardRecent(params = {}) {
+        return this.getDashboard('recent', params);
+    }
+
+    getDashboardAddedPerDay(params = {}) {
+        return this.getDashboard('added-per-day', params);
+    }
+
+    getDashboard(path, params) {
+        return this.httpClient
+            .get(`${this.getApiBasePath()}/dashboard/${path}`, {
+                params: Object.fromEntries(
+                    Object.entries(params).filter(
+                        ([, value]) => value !== null && value !== undefined
+                    )
+                ),
+                headers: this.getBasicHeaders(),
+            })
+            .then((response) => ApiService.handleResponse(response));
+    }
 }

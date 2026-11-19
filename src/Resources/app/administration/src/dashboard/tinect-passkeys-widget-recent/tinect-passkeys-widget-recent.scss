@@ -1,0 +1,18 @@
+.tinect-passkeys-widget-recent {
+    overflow-x: auto;
+
+    &__grid {
+        border: none;
+    }
+
+    &__customer-number {
+        font-size: var(--font-size-xs, 12px);
+        color: var(--color-text-secondary-default, #758ca3);
+    }
+
+    &__empty {
+        padding: 24px;
+        text-align: center;
+        color: var(--color-text-secondary-default, #758ca3);
+    }
+}

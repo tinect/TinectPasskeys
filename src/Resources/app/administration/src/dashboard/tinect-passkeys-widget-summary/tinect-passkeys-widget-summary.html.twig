@@ -1,0 +1,34 @@
+{% block tinect_passkeys_widget_summary %}
+<div class="tinect-passkeys-widget-summary">
+    <sw-loader v-if="isLoading" />
+    <p
+        v-else-if="hasError"
+        class="tinect-passkeys-widget-summary__empty"
+    >
+        {{ $t('tinect-passkeys.dashboard.loadError') }}
+    </p>
+    <dl
+        v-else-if="summary"
+        class="tinect-passkeys-widget-summary__tiles"
+    >
+        <div
+            v-for="tile in tiles"
+            :key="tile.key"
+            class="tinect-passkeys-widget-summary__tile"
+        >
+            <dt class="tinect-passkeys-widget-summary__label">
+                {{ tile.label }}
+            </dt>
+            <dd class="tinect-passkeys-widget-summary__value">
+                {{ tile.value }}
+            </dd>
+            <dd
+                v-if="tile.hint"
+                class="tinect-passkeys-widget-summary__hint"
+            >
+                {{ tile.hint }}
+            </dd>
+        </div>
+    </dl>
+</div>
+{% endblock %}
