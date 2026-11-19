@@ -15,12 +15,21 @@ readonly class PasskeyStatistics
 {
     public const ACTIVE_DAYS = 30;
 
+    /**
+     * Customers who can log in: no guests, no inactive customers, no unconfirmed double opt-in registrations.
+     */
+    private const LOGIN_CAPABLE_CUSTOMER_CONDITION = ' AND `customer`.`guest` = 0
+        AND `customer`.`active` = 1
+        AND NOT (`customer`.`double_opt_in_registration` = 1 AND `customer`.`double_opt_in_confirm_date` IS NULL)';
+
     public function __construct(
         private Connection $connection,
     ) {
     }
 
     /**
+     * Only customers who can log in count, see LOGIN_CAPABLE_CUSTOMER_CONDITION.
+     *
      * @return array{customers: int, customersWithPasskey: int, activeCustomers: int, passkeys: int, passwordLoginDisabled: int}
      */
     public function getSummary(?string $salesChannelId): array
@@ -33,7 +42,7 @@ readonly class PasskeyStatistics
                     COUNT(DISTINCT CASE WHEN `passkey`.`last_used_at` >= :activeSince THEN `passkey`.`customer_id` END) AS `activeCustomers`
              FROM `tinect_passkey` `passkey`
              INNER JOIN `customer` ON `customer`.`id` = `passkey`.`customer_id`
-             WHERE 1 = 1' . $salesChannelCondition,
+             WHERE 1 = 1' . self::LOGIN_CAPABLE_CUSTOMER_CONDITION . $salesChannelCondition,
             $params + [
                 'activeSince' => (new \DateTimeImmutable(\sprintf('-%d days', self::ACTIVE_DAYS)))->format(Defaults::STORAGE_DATE_TIME_FORMAT),
             ]
@@ -43,13 +52,12 @@ readonly class PasskeyStatistics
             'SELECT COUNT(*)
              FROM `tinect_passkey_customer_setting` `setting`
              INNER JOIN `customer` ON `customer`.`id` = `setting`.`customer_id`
-             WHERE `setting`.`password_login_disabled` = 1' . $salesChannelCondition,
+             WHERE `setting`.`password_login_disabled` = 1' . self::LOGIN_CAPABLE_CUSTOMER_CONDITION . $salesChannelCondition,
             $params
         );
 
-        // Guests can not register passkeys, so they do not count for the adoption rate.
         $customers = $this->connection->fetchOne(
-            'SELECT COUNT(*) FROM `customer` WHERE `customer`.`guest` = 0' . $salesChannelCondition,
+            'SELECT COUNT(*) FROM `customer` WHERE 1 = 1' . self::LOGIN_CAPABLE_CUSTOMER_CONDITION . $salesChannelCondition,
             $params
         );
 

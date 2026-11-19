@@ -23,8 +23,9 @@ The plugin is compatible with Shopware 6.7 and PHP 8.2 and higher.
 - Administration: list and remove passkeys of a customer in the customer detail page, enable the password login again
 - Dashboard widgets for [Frosh Admin Dashboard](https://github.com/FriendsOfShopware/FroshAdminDashboard) (optional,
   group "Passkeys", requires the `customer.viewer` privilege), each filterable by sales channel:
-  - Passkey usage: customers with passkeys and their share of all registered customers, number of passkeys, customers
-    who used a passkey in the last 30 days and customers with disabled password login
+  - Passkey usage: customers with passkeys and their share of all customers who can log in (active, no guests, double
+    opt-in confirmed), number of passkeys, customers who used a passkey in the last 30 days and customers with disabled
+    password login
   - Added passkeys: chart of added passkeys per day for the last 7 to 360 days
   - Recently added passkeys: the latest passkeys with their customers
 - `/.well-known/passkey-endpoints` for password managers
