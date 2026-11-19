@@ -16,6 +16,40 @@
             "notificationPasswordLoginEnabled": "The password login has been enabled again.",
             "notificationPasswordLoginError": "The password login could not be enabled.",
             "enablePasswordLoginConfirm": "Enable the password login for this customer again? The customer is informed by e-mail."
+        },
+        "dashboard": {
+            "group": "Passkeys",
+            "salesChannel": "Sales channel",
+            "salesChannelHelp": "Only include customers of this sales channel. Leave empty for all sales channels.",
+            "loadError": "The data could not be loaded.",
+            "range": {
+                "7Days": "Last 7 days",
+                "30Days": "Last 30 days",
+                "90Days": "Last 90 days",
+                "180Days": "Last 180 days",
+                "360Days": "Last 360 days"
+            },
+            "summary": {
+                "label": "Passkey usage",
+                "description": "Customers with passkeys, share of all customers and passkey-only logins",
+                "customersWithPasskey": "Customers with passkey",
+                "adoptionRate": "{rate} of {customers} customers",
+                "passkeys": "Passkeys",
+                "activeCustomers": "Used in the last {days} days",
+                "passwordLoginDisabled": "Password login disabled"
+            },
+            "added": {
+                "label": "Added passkeys",
+                "description": "Number of added passkeys per day",
+                "seriesName": "Added passkeys"
+            },
+            "recent": {
+                "label": "Recently added passkeys",
+                "description": "The latest passkeys with their customers",
+                "limit": "Number of entries",
+                "columnCustomer": "Customer",
+                "empty": "No passkeys have been added yet."
+            }
         }
     }
 }

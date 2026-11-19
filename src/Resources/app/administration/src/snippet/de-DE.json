@@ -16,6 +16,40 @@
             "notificationPasswordLoginEnabled": "Die Anmeldung per Passwort ist wieder aktiviert.",
             "notificationPasswordLoginError": "Die Anmeldung per Passwort konnte nicht aktiviert werden.",
             "enablePasswordLoginConfirm": "Die Anmeldung per Passwort für diesen Kunden wieder aktivieren? Der Kunde wird per Mail darüber informiert."
+        },
+        "dashboard": {
+            "group": "Passkeys",
+            "salesChannel": "Verkaufskanal",
+            "salesChannelHelp": "Nur Kunden dieses Verkaufskanals berücksichtigen. Leer lassen für alle Verkaufskanäle.",
+            "loadError": "Die Daten konnten nicht geladen werden.",
+            "range": {
+                "7Days": "Letzte 7 Tage",
+                "30Days": "Letzte 30 Tage",
+                "90Days": "Letzte 90 Tage",
+                "180Days": "Letzte 180 Tage",
+                "360Days": "Letzte 360 Tage"
+            },
+            "summary": {
+                "label": "Passkey-Nutzung",
+                "description": "Kunden mit Passkeys, Anteil an allen Kunden und Anmeldung nur per Passkey",
+                "customersWithPasskey": "Kunden mit Passkey",
+                "adoptionRate": "{rate} von {customers} Kunden",
+                "passkeys": "Passkeys",
+                "activeCustomers": "In den letzten {days} Tagen verwendet",
+                "passwordLoginDisabled": "Passwort-Login deaktiviert"
+            },
+            "added": {
+                "label": "Hinzugefügte Passkeys",
+                "description": "Anzahl der hinzugefügten Passkeys pro Tag",
+                "seriesName": "Hinzugefügte Passkeys"
+            },
+            "recent": {
+                "label": "Zuletzt hinzugefügte Passkeys",
+                "description": "Die neuesten Passkeys mit ihren Kunden",
+                "limit": "Anzahl der Einträge",
+                "columnCustomer": "Kunde",
+                "empty": "Es wurden noch keine Passkeys hinzugefügt."
+            }
         }
     }
 }

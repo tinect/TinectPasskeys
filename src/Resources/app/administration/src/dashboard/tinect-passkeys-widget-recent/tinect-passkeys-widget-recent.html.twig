@@ -1,0 +1,45 @@
+{% block tinect_passkeys_widget_recent %}
+<div class="tinect-passkeys-widget-recent">
+    <p
+        v-if="hasError"
+        class="tinect-passkeys-widget-recent__empty"
+    >
+        {{ $t('tinect-passkeys.dashboard.loadError') }}
+    </p>
+    <p
+        v-else-if="!isLoading && passkeys.length === 0"
+        class="tinect-passkeys-widget-recent__empty"
+    >
+        {{ $t('tinect-passkeys.dashboard.recent.empty') }}
+    </p>
+    <sw-data-grid
+        v-else
+        class="tinect-passkeys-widget-recent__grid"
+        :data-source="passkeys"
+        :columns="columns"
+        :is-loading="isLoading"
+        :show-selection="false"
+        :show-actions="false"
+        :plain-appearance="true"
+        :allow-inline-edit="false"
+        :allow-column-edit="false"
+    >
+        <template #column-customer="{ item }">
+            <router-link :to="{ name: 'sw.customer.detail', params: { id: item.customerId } }">
+                {{ item.lastName }}, {{ item.firstName }}
+            </router-link>
+            <div class="tinect-passkeys-widget-recent__customer-number">
+                {{ item.customerNumber }}
+            </div>
+        </template>
+
+        <template #column-createdAt="{ item }">
+            {{ formatDate(item.createdAt) }}
+        </template>
+
+        <template #column-lastUsedAt="{ item }">
+            {{ item.lastUsedAt ? formatDate(item.lastUsedAt) : $t('tinect-passkeys.customerCard.neverUsed') }}
+        </template>
+    </sw-data-grid>
+</div>
+{% endblock %}

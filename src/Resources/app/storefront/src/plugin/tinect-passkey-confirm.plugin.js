@@ -79,7 +79,8 @@ export default class TinectPasskeyConfirmPlugin extends window.PluginBaseClass {
 
             this._showError(
                 isNotAllowedError(error)
-                    ? this.options.notAllowedMessage || this.options.errorMessage
+                    ? this.options.notAllowedMessage ||
+                          this.options.errorMessage
                     : error?.serverMessage || this.options.errorMessage
             );
         }

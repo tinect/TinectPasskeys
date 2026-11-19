@@ -1,0 +1,24 @@
+{% block tinect_passkeys_widget_added %}
+<div class="tinect-passkeys-widget-added">
+    <div class="tinect-passkeys-widget-added__total">
+        {{ formattedTotal }}
+    </div>
+    <sw-chart-card
+        class="tinect-passkeys-widget-added__chart"
+        :available-ranges="availableRanges"
+        :default-range-index="defaultRangeIndex"
+        :series="chartSeries"
+        :options="chartOptions"
+        :is-loading="isLoading"
+        type="bar"
+        fill-empty-values="day"
+        sort
+        position-identifier="tinect-passkeys-widget-added"
+        @sw-chart-card-range-update="onRangeUpdate"
+    >
+        <template #range-option="{ range }">
+            {{ $t(`tinect-passkeys.dashboard.range.${range}`) }}
+        </template>
+    </sw-chart-card>
+</div>
+{% endblock %}

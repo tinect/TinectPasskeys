@@ -1,6 +1,8 @@
 import deDE from './snippet/de-DE.json';
 import enGB from './snippet/en-GB.json';
 import TinectPasskeyApiService from './service/tinect-passkey-api.service';
+// Widgets for the optional FroshAdminDashboard plugin
+import './dashboard';
 
 Shopware.Application.addServiceProvider(
     'tinectPasskeyApiService',
